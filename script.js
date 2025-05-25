@@ -171,5 +171,135 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         .catch(error => console.error('Erreur de chargement du GeoJSON:', error));
 
-    // ... (code du bouton de géolocalisation à ajouter ici plus tard)
+    // --- DÉBUT DE LA FONCTIONNALITÉ "OÙ SUIS-JE ?" ---
+
+    var userMarker; // Pour garder une référence au marqueur de l'utilisateur
+    var previousHighlightedLayer = null; // Pour se souvenir du dernier quartier mis en évidence
+
+    const geolocateButton = document.getElementById('geolocate-btn');
+    const userQuartierInfoDiv = document.getElementById('user-quartier-info');
+
+    if (geolocateButton) {
+        geolocateButton.addEventListener('click', function() {
+            if (navigator.geolocation) {
+                // Afficher un message de chargement
+                if (userQuartierInfoDiv) {
+                    userQuartierInfoDiv.innerHTML = "Recherche de votre position...";
+                }
+                // Options pour la géolocalisation
+                var geoOptions = {
+                    enableHighAccuracy: true, // Demander une position plus précise
+                    timeout: 10000,           // Attendre 10 secondes maximum
+                    maximumAge: 0             // Ne pas utiliser une position en cache
+                };
+                navigator.geolocation.getCurrentPosition(showPosition, showError, geoOptions);
+            } else {
+                if (userQuartierInfoDiv) {
+                    userQuartierInfoDiv.textContent = "La géolocalisation n'est pas supportée par ce navigateur.";
+                }
+                alert("La géolocalisation n'est pas supportée par ce navigateur.");
+            }
+        });
+    }
+
+    function showPosition(position) {
+        var lat = position.coords.latitude;
+        var lng = position.coords.longitude;
+
+        console.log("Position utilisateur:", lat, lng);
+
+        // Supprimer l'ancien marqueur s'il existe
+        if (userMarker) {
+            map.removeLayer(userMarker);
+        }
+
+        // Ajouter un nouveau marqueur pour la position de l'utilisateur
+        // Utiliser une icône personnalisée si vous le souhaitez
+        userMarker = L.marker([lat, lng]).addTo(map)
+            .bindPopup("Vous êtes approximativement ici !")
+            .openPopup();
+
+        // Centrer la carte sur la position de l'utilisateur
+        map.setView([lat, lng], 15); // Zoom plus rapproché (ajustez si besoin)
+
+        // Trouver dans quel quartier se trouve l'utilisateur
+        findUserQuartier(lat, lng);
+    }
+
+    function showError(error) {
+        let message = "Impossible d'obtenir votre position : ";
+        switch(error.code) {
+            case error.PERMISSION_DENIED:
+                message += "Vous avez refusé la demande de géolocalisation.";
+                break;
+            case error.POSITION_UNAVAILABLE:
+                message += "Les informations de localisation ne sont pas disponibles.";
+                break;
+            case error.TIMEOUT:
+                message += "La demande de localisation a expiré.";
+                break;
+            case error.UNKNOWN_ERROR:
+                message += "Une erreur inconnue s'est produite.";
+                break;
+        }
+        if (userQuartierInfoDiv) {
+            userQuartierInfoDiv.textContent = message;
+        }
+        console.error(message, error);
+        alert(message);
+    }
+
+    function findUserQuartier(lat, lng) {
+        if (!quartiersData || !quartiersData.features || !quartiersLayer) {
+            if (userQuartierInfoDiv) {
+                userQuartierInfoDiv.textContent = "Les données des quartiers ne sont pas encore chargées. Veuillez patienter.";
+            }
+            return;
+        }
+
+        var userPoint = turf.point([lng, lat]); // Turf.js utilise [longitude, latitude]
+        var foundQuartierName = null;
+        var foundQuartierFeature = null;
+
+        // Réinitialiser le style du quartier précédemment mis en évidence
+        if (previousHighlightedLayer) {
+            quartiersLayer.resetStyle(previousHighlightedLayer);
+            previousHighlightedLayer = null;
+        }
+
+        for (var i = 0; i < quartiersData.features.length; i++) {
+            var quartierFeature = quartiersData.features[i];
+            // turf.booleanPointInPolygon gère les Polygons et les MultiPolygons
+            if (turf.booleanPointInPolygon(userPoint, quartierFeature.geometry)) {
+                foundQuartierFeature = quartierFeature;
+                foundQuartierName = quartierFeature.properties.l_qu || "Quartier inconnu";
+                break; // Sortir de la boucle dès qu'un quartier est trouvé
+            }
+        }
+
+        if (foundQuartierName && userQuartierInfoDiv) {
+            userQuartierInfoDiv.innerHTML = `Vous êtes dans le quartier : <strong>${foundQuartierName}</strong> (${foundQuartierFeature.properties.c_ar}<sup>e</sup> arr.).`;
+
+            // Mettre en évidence le quartier trouvé
+            quartiersLayer.eachLayer(function(layer) {
+                // Comparer une propriété unique pour s'assurer que c'est la bonne feature
+                if (layer.feature.properties.c_quinsee === foundQuartierFeature.properties.c_quinsee) {
+                    layer.setStyle({
+                        fillColor: '#ffc107', // Couleur de mise en évidence (jaune/orange)
+                        fillOpacity: 0.8,
+                        weight: 3,
+                        color: '#000' // Bordure plus épaisse et noire
+                    });
+                    previousHighlightedLayer = layer; // Se souvenir de cette couche
+                    if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+                        layer.bringToFront(); // Mettre le quartier au premier plan
+                    }
+                }
+            });
+
+        } else if (userQuartierInfoDiv) {
+            userQuartierInfoDiv.textContent = "Vous ne semblez pas être dans un quartier de Paris répertorié ou la détection a échoué.";
+        }
+    }
+    // --- FIN DE LA FONCTIONNALITÉ "OÙ SUIS-JE ?" ---
 });
