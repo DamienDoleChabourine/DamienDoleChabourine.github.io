@@ -1,0 +1,65 @@
+/* Style pour le conteneur principal du popup personnalisé */
+.custom-popup {
+    width: 300px; /* ou la largeur que vous souhaitez pour le popup total */
+    max-height: 400px; /* Optionnel: pour éviter des popups trop hauts */
+    overflow-y: auto; /* Ajoute une barre de défilement si le contenu dépasse */
+}
+
+/* Si vous voulez une disposition où l'image est au-dessus du texte (plus simple) */
+/*
+.popup-image-container img {
+    width: 100%;
+    height: auto;
+    display: block;
+    margin-bottom: 10px; /* Espace entre l'image et le texte */
+}
+.popup-text-container {
+    padding: 5px;
+}
+*/
+
+/* Pour une disposition 4/5e image et 1/5e texte côte à côte (plus complexe) */
+/* Il est plus facile de mettre l'image au-dessus et le texte en dessous pour les popups Leaflet */
+/* Si vous voulez vraiment côte à côte, il faudra jouer avec des largeurs fixes ou % et
+   potentiellement du display:flex sur .custom-popup, mais la gestion de la hauteur
+   de l'image pour qu'elle corresponde à 4/5 de la hauteur totale peut être délicate
+   sans JS supplémentaire pour calculer les hauteurs. */
+
+/* Une approche plus simple pour une image grande et un texte en dessous : */
+.custom-popup .popup-image-container {
+    /* L'image prendra la largeur du popup, la hauteur s'adaptera */
+    margin-bottom: 10px; /* Espace avant le texte */
+}
+
+.custom-popup .popup-image-container img {
+    border-radius: 4px; /* Coins arrondis pour l'image */
+}
+
+.custom-popup .popup-text-container {
+    padding: 0 5px 5px 5px; /* Un peu de padding pour le texte */
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.custom-popup h3 {
+    margin-top: 0;
+    margin-bottom: 8px;
+    font-size: 16px;
+}
+
+.custom-popup p {
+    margin-bottom: 5px;
+}
+
+/* Ajustements pour que le popup Leaflet s'adapte mieux au contenu large */
+.leaflet-popup-content-wrapper {
+    /* Vous pouvez augmenter le padding par défaut si besoin */
+    /* padding: 10px; */
+}
+
+.leaflet-popup-content {
+    margin: 10px 15px; /* Augmenter les marges internes du contenu du popup */
+    width: auto !important; /* Important pour que maxWidth fonctionne bien */
+    max-height: 400px; /* Limite pour la hauteur totale du contenu */
+    overflow-y: auto;
+}

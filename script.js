@@ -111,34 +111,58 @@ document.addEventListener('DOMContentLoaded', function () {
                     };
                 },
                 onEachFeature: function(feature, layer) {
-                    var nomQuartier = feature.properties.l_qu || "Nom Indisponible";
-                    var arrondissement = feature.properties.c_ar || "N/A";
-                    layer.bindPopup("<b>Quartier :</b> " + nomQuartier + "<br>Arrondissement : " + arrondissement);
+    var props = feature.properties; // Raccourci pour accéder aux propriétés
+    var nomQuartier = props.l_qu || "Nom Indisponible";
+    var arrondissement = props.c_ar || "N/A";
 
-                    layer.on('mouseover', function (e) {
-                        var currentLayer = e.target;
-                        currentLayer.setStyle({
-                            weight: 3,
-                            color: '#000', // Bordure noire au survol
-                            fillOpacity: 0.9
-                        });
-                        if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
-                            currentLayer.bringToFront();
-                        }
-                    });
-                    layer.on('mouseout', function (e) {
-                        quartiersLayer.resetStyle(e.target);
-                    });
+    // Slugifier le nom du quartier pour les liens et noms d'images
+    var nomPourLienEtImage = (nomQuartier).toLowerCase()
+        .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // Enlever les accents
+        .replace(/\s+/g, '-') // Remplacer les espaces par des tirets
+        .replace(/[.'()]/g, '') // Enlever apostrophes, points, parenthèses
+        .replace(/[^a-z0-9-]/g, ''); // Enlever les caractères non alphanumériques (sauf tiret)
 
-                    layer.on('click', function(e) {
-                        var props = e.target.feature.properties;
-                        var nomPourLien = (props.l_qu || "quartier-inconnu").toLowerCase()
-                            .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-                            .replace(/\s+/g, '-')
-                            .replace(/[^a-z0-9-]/g, '');
-                        alert("Vous avez cliqué sur : " + props.l_qu + "\nLien futur : articles/" + nomPourLien + ".html");
-                    });
-                }
+    // Construire le chemin de l'image (adaptez l'extension si besoin, ex: .png)
+    var imagePath = 'images/' + nomPourLienEtImage + '.jpg'; // Ou .png, etc.
+
+    // Texte pour le lien vers l'article
+    var lienTexte = "En savoir plus sur " + nomQuartier;
+    var articlePath = 'articles/' + nomPourLienEtImage + '.html';
+
+    // Contenu HTML pour le popup
+    var popupContent = `
+        <div class="custom-popup">
+            <div class="popup-image-container">
+                <img src="${imagePath}" alt="Image du quartier ${nomQuartier}" style="width:100%; height:auto; display:block;">
+            </div>
+            <div class="popup-text-container">
+                <h3>${nomQuartier}</h3>
+                <p>Arrondissement : ${arrondissement}</p>
+                <p><a href="${articlePath}">Découvrir ce quartier →</a></p>
+            </div>
+        </div>
+    `;
+
+    layer.bindPopup(popupContent, {
+        maxWidth: "auto" // Permet au popup de s'adapter à son contenu
+        // Vous pouvez aussi définir une largeur fixe si vous préférez, ex: maxWidth: 350
+    });
+
+    // ... (le reste de onEachFeature : mouseover, mouseout, click comme avant)
+    // Si vous avez une action de clic qui redirige déjà, vous pouvez la laisser
+    // ou la commenter si le lien dans le popup suffit.
+    // Pour l'instant, le layer.on('click', ...) que vous aviez peut être redondant
+    // si le lien dans le popup est ce que vous voulez.
+    // Vous pourriez le supprimer ou le modifier pour faire autre chose,
+    // comme centrer la carte sur le quartier cliqué.
+    /*
+    layer.on('click', function(e) {
+        // Exemple : centrer la carte sur le polygone cliqué
+        // map.fitBounds(e.target.getBounds());
+        // alert("Vous avez cliqué sur : " + props.l_qu);
+    });
+    */
+}
             }).addTo(map);
 
              if (quartiersLayer.getBounds().isValid()) {
