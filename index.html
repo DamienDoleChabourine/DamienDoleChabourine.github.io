@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Les 80 quartiers de Paris - Carte Interactive</title>
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
+
+    <!-- Votre CSS personnalisé -->
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* Style de base pour que la carte soit visible */
+        #map {
+            height: 500px; /* Hauteur de base demandée */
+            width: 100%;
+            border: 1px solid #ccc; /* Optionnel : pour voir les limites de la div */
+        }
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+        }
+        button {
+            padding: 10px 15px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+        #user-quartier-info {
+            margin-top: 15px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Découvrez les Quartiers de Paris</h1>
+
+    <p>C'est ici que vous pourrez explorer les 80 quartiers administratifs de Paris grâce à cette carte interactive. Cliquez sur un quartier pour obtenir plus d'informations ou utilisez le bouton ci-dessous pour voir dans quel quartier vous vous trouvez actuellement.</p>
+
+    <!-- Conteneur pour la carte Leaflet -->
+    <div id="map"></div>
+
+    <!-- Bouton pour la géolocalisation -->
+    <button id="geolocate-btn">Où suis-je ?</button>
+
+    <!-- Div pour afficher les informations du quartier de l'utilisateur -->
+    <div id="user-quartier-info"></div>
+
+    <!-- Leaflet JS (doit être inclus AVANT votre script.js) -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
+
+    <!-- Optionnel mais recommandé pour la fonction "point dans polygone" : Turf.js -->
+    <script src='https://unpkg.com/@turf/turf@6/turf.min.js'></script>
+
+
+    <!-- Votre JavaScript personnalisé -->
+    <script src="script.js"></script>
+
+</body>
+</html>
