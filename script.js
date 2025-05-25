@@ -18,8 +18,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const arrondissementColors = {
         1: '#d44a7a',  2: '#5ad44a',  3: '#4a7ad4',  4: '#d4a04a',
         5: '#4ad4c1',  6: '#a04ad4',  7: '#d4d44a',  8: '#4a91d4',
-        9: '#d44a4a', 10: '#4ad47a', 11: '#7a4ad4', 12: '#d47a4a',
-        13: '#4a9fd4', 14: '#d44ac1', 15: '#7ad44a', 16: '#4a4ad4',
+        9: '#d44a4a', 10: '#4ad47a', 11: '#7a4ad4', 12: '#2274a5',
+        13: '#D70A0A', 14: '#d44ac1', 15: '#7ad44a', 16: '#4a4ad4',
         17: '#c1d44a', 18: '#d44a91', 19: '#4ad4a0', 20: '#d4a0d4'
     };
 
