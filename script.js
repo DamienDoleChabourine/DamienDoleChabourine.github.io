@@ -114,8 +114,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     var props = feature.properties;
                     var nomQuartier = props.l_qu || "Nom Indisponible";
                     var arrondissement = props.c_ar || "N/A";
-                    // var habitants = props.habitants !== undefined ? props.habitants.toLocaleString('fr-FR') : "Donnée non disponible";
-
                     var nomPourLienEtImage = (nomQuartier).toLowerCase()
                         .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
                         .replace(/\s+/g, '-')
