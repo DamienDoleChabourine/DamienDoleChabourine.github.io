@@ -188,24 +188,30 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // --- DÉBUT DE LA FONCTIONNALITÉ "OÙ SUIS-JE ?" ---
 
-var userMarker; // Pour garder une référence au marqueur de l'utilisateur
+var userMarker;
 
-// Récupération des éléments du DOM pour la géolocalisation
 const geolocateButton = document.getElementById('geolocate-btn');
 const userQuartierInfoDiv = document.getElementById('user-quartier-info');
 
-if (geolocateButton && userQuartierInfoDiv) { // Vérifier que les éléments existent
+if (geolocateButton && userQuartierInfoDiv) {
+    console.log("Bouton et div d'info trouvés. Attachement de l'écouteur."); // NOUVEAU LOG
     geolocateButton.addEventListener('click', function() {
+        console.log("Clic sur le bouton 'Où suis-je ?' DÉTECTÉ !"); // <<--- LOG IMPORTANT
+        
+        userQuartierInfoDiv.innerHTML = "Tentative de géolocalisation..."; // Pour voir si on entre ici
+
         if (navigator.geolocation) {
-            userQuartierInfoDiv.innerHTML = "Recherche de votre position..."; // Message pendant la recherche
+            console.log("navigator.geolocation est supporté."); // NOUVEAU LOG
+            userQuartierInfoDiv.innerHTML = "Recherche de votre position...";
 
             var geoOptions = {
-                enableHighAccuracy: true, // Demander une position plus précise
-                timeout: 10000,           // Attendre 10 secondes maximum
-                maximumAge: 0             // Ne pas utiliser une position en cache
+                enableHighAccuracy: true,
+                timeout: 10000,
+                maximumAge: 0
             };
             navigator.geolocation.getCurrentPosition(showPosition, showError, geoOptions);
         } else {
+            console.warn("navigator.geolocation NON supporté."); // NOUVEAU LOG
             userQuartierInfoDiv.textContent = "La géolocalisation n'est pas supportée par ce navigateur.";
             alert("La géolocalisation n'est pas supportée par ce navigateur.");
         }
