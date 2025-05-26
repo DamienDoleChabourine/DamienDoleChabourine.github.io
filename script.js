@@ -16,11 +16,11 @@ document.addEventListener('DOMContentLoaded', function () {
     // Couleurs de base pour les 20 arrondissements (vous pouvez les personnaliser)
     // Source: https://medialab.github.io/iwanthue/ (par exemple, pour générer des couleurs distinctes)
     const arrondissementColors = {
-        1: '#d44a7a',  2: '#5ad44a',  3: '#4a7ad4',  4: '#d4a04a',
+        1: '#d44a7a',  2: '#7B6E6B',  3: '#4a7ad4',  4: '#d4a04a',
         5: '#DE7F11',  6: '#a04ad4',  7: '#d4d44a',  8: '#4a91d4',
-        9: '#d44a4a', 10: '#4ad47a', 11: '#7a4ad4', 12: '#0F39D2',
+        9: '#d44a4a', 10: '#7a4ad4', 11: '#4ad47a', 12: '#0F39D2',
         13: '#A4181B', 14: '#7ad44a', 15: '#d44ac1', 16: '#4a4ad4',
-        17: '#c1d44a', 18: '#d44a91', 19: '#FF4400', 20: '#d4a0d4'
+        17: '#c1d44a', 18: '#d44a91', 19: '#FF4400', 20: '#882D17'
     };
 
     // Fonction pour ajuster la luminosité d'une couleur HEX
