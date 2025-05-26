@@ -43,7 +43,39 @@ document.addEventListener('DOMContentLoaded', function () {
         else if (g < 0) g = 0;
         return (usePound ? "#" : "") + String("000000" + (g | (b << 8) | (r << 16)).toString(16)).slice(-6);
     }
+// --- Début de la fonction de style principale pour les quartiers ---
+function styleQuartier(feature) {
+    const arrondissement = feature.properties.c_ar;
+    const codeQuartier = feature.properties.c_qu;
 
+    let baseColor = arrondissementColors[arrondissement] || '#cccccc';
+
+    // Assurer que quartiersData est disponible (il le sera après le fetch)
+    if (!quartiersData || !quartiersData.features) {
+        return { fillColor: '#cccccc', weight: 1, opacity: 1, color: 'white', fillOpacity: 0.5 }; // Style par défaut
+    }
+
+    const quartiersDeLArrondissement = quartiersData.features
+        .filter(f => f.properties.c_ar === arrondissement)
+        .sort((a, b) => (a.properties.c_qu || "").localeCompare(b.properties.c_qu || ""));
+
+    let quartierRank = quartiersDeLArrondissement.findIndex(q => q.properties.c_qu === codeQuartier);
+    if (quartierRank === -1) quartierRank = 0;
+
+    let teinteAdjustment = -60 + (quartierRank * 40);
+    if (quartierRank > 3) teinteAdjustment = 60;
+
+    let finalColor = adjustColor(baseColor, teinteAdjustment);
+
+    return {
+        fillColor: finalColor,
+        weight: 1,
+        opacity: 1,
+        color: 'white',
+        fillOpacity: 0.7
+    };
+}
+// --- Fin de la fonction de style principale ---
     // Pour stocker un index de quartier par arrondissement (pour le dégradé)
     let quartierIndexByArrondissement = {};
 
@@ -305,4 +337,4 @@ onEachFeature: function(feature, layer) {
         }
     }
     // --- FIN DE LA FONCTIONNALITÉ "OÙ SUIS-JE ?" ---
-});
+}); 
