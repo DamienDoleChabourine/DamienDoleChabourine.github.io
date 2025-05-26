@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         const num = parseInt(color, 16);
         let r = (num >> 16) + amount;
-        if (r > 255) r = 2 de m'avoir fourni tout le code ! J'ai repéré le problème.
+        if (r > 255) r = 2 
 
 Vous avez **deux** blocs `document.addEventListener('DOMContentLoaded', function () { ... });`.
 
