@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         const num = parseInt(color, 16);
         let r = (num >> 16) + amount;
-        if (r > 255) r = 2 
+        if (r > 255) r = 2 de m'avoir fourni tout le code ! J'ai repéré le problème.
 
 Vous avez **deux** blocs `document.addEventListener('DOMContentLoaded', function () { ... });`.
 
@@ -365,4 +365,4 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     // --- FIN DE LA FONCTIONNALITÉ "OÙ SUIS-JE ?" ---
 
-}); // Fin de DOMContentLoaded (il ne doit y en avoir qu'un seul qui ferme tout)
+});
