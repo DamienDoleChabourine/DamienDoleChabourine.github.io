@@ -365,4 +365,4 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     // --- FIN DE LA FONCTIONNALITÉ "OÙ SUIS-JE ?" ---
 
-});
+}); // Fin de DOMContentLoaded (il ne doit y en avoir qu'un seul qui ferme tout)
