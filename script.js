@@ -1,238 +1,108 @@
-// Le code principal s'exécute une fois que le DOM est prêt
+// Attendre que le DOM soit entièrement chargé
 document.addEventListener('DOMContentLoaded', function () {
 
-    // --- VARIABLES QUI SERONT UTILISÉES DANS CE SCOPE ---
-    var map;
-    var quartiersLayer;
-    var quartiersData;
-    var userMarker;
+    // 1. Initialiser la carte Leaflet
+    var map = L.map('map').setView([48.8566, 2.3522], 12); // Centré sur Paris
 
-    // --- CONFIGURATION DES COULEURS ---
-    const arrondissementColors = {
-        1: '#d44a7a', 2: '#5ad44a', 3: '#4a7ad4', 4: '#d4a04a',
-        5: '#4ad4c1', 6: '#a04ad4', 7: '#d4d44a', 8: '#4a91d4',
-        9: '#d44a4a', 10: '#4ad47a', 11: '#7a4ad4', 12: '#d47a4a',
-        13: '#4a9fd4', 14: '#d44ac1', 15: '#7ad44a', 16: '#4a4ad4',
-        17: '#c1d44a', 18: '#d44a91', 19: '#4ad4a0', 20: '#d4a0d4',
-        'default': '#cccccc' // Couleur par défaut si un arrondissement n'est pas trouvé
-    };
-
-    // --- FONCTIONS UTILITAIRES ---
-
-    // Fonction pour ajuster la luminosité d'une couleur HEX
-    function adjustColor(color, amount) {
-        let usePound = false;
-        if (color[0] === "#") {
-            color = color.slice(1);
-            usePound = true;
-        }
-        const num = parseInt(color, 16);
-        let r = (num >> 16) + amount;
-        if (r > 255) r = 255;
-        else if (r < 0) r = 0;
-
-        let b = ((num >> 8) & 0x00FF) + amount;
-        if (b > 255) b = 255;
-        else if (b < 0) b = 0;
-
-        let g = (num & 0x0000FF) + amount;
-        if (g > 255) g = 255;
-        else if (g < 0) g = 0;
-
-        return (usePound ? "#" : "") + String("000000" + (g | (b << 8) | (r << 16)).toString(16)).slice(-6);
-    }
-
-    // Fonction de style principale pour les polygones des quartiers
-    function styleQuartier(feature) {
-        // ... (le reste de la fonction styleQuartier comme dans l'exemple précédent)
-        const arrondissement = feature.properties.c_ar;
-        const codeQuartier = feature.properties.c_qu;
-        let baseColor = arrondissementColors[arrondissement] || arrondissementColors['default'];
-
-        if (!quartiersData || !quartiersData.features) {
-            return { fillColor: arrondissementColors['default'], weight: 1, opacity: 1, color: 'white', fillOpacity: 0.5 };
-        }
-
-        const quartiersDeLArrondissement = quartiersData.features
-            .filter(f => f.properties.c_ar === arrondissement)
-            .sort((a, b) => (String(a.properties.c_qu) || "").localeCompare(String(b.properties.c_qu) || ""));
-
-        let quartierRank = quartiersDeLArrondissement.findIndex(q => q.properties.c_qu === codeQuartier);
-        if (quartierRank === -1) quartierRank = 0;
-
-        let teinteAdjustment = -60 + (quartierRank * 40);
-        if (quartierRank > 3) teinteAdjustment = 60;
-
-        let finalColor = adjustColor(baseColor, teinteAdjustment);
-
-        return {
-            fillColor: finalColor,
-            weight: 1,
-            opacity: 1,
-            color: 'white',
-            fillOpacity: 0.7
-        };
-    }
-
-    // Données textuelles pour les popups (à compléter pour les 80 quartiers)
-    const descriptionsQuartiers = {
-        "gare": `<ul><li>Les + belles vues sont dans ses tours</li><li>...</li></ul>`,
-        "pere-lachaise": `<ul><li>Le Père-Lachaise est objectivement le cimetière le + ouf de Paris</li><li>...</li></ul>`,
-        // ... AJOUTEZ TOUTES VOS DESCRIPTIONS ICI ...
-        "sainte-marguerite": `<ul><li>L'un des endroits les + chouettes de Paris...</li><li>...</li></ul>`
-    };
-
-
-    // --- INITIALISATION DE LA CARTE ---
-    map = L.map('map').setView([48.8566, 2.3522], 12);
+    // 2. Ajouter un fond de carte (Tile Layer)
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '© <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
-    console.log("Carte Leaflet initialisée.");
 
+    var quartiersLayer; // Variable pour stocker la couche des quartiers
+    var quartiersData;  // Variable pour stocker les données GeoJSON brutes
 
-    // --- CHARGEMENT ET AFFICHAGE DES QUARTIERS ---
+    // 3. Charger les données GeoJSON des quartiers
+    // Assurez-vous que le chemin est correct par rapport à votre index.html
     fetch('data/quartier_paris.json')
         .then(response => {
-            // ... (code du fetch comme dans l'exemple précédent)
+            if (!response.ok) {
+                throw new Error('Erreur réseau lors du chargement du GeoJSON : ' + response.statusText);
+            }
+            return response.json();
         })
-        .then(rawData => {
-            // ... (transformation de rawData en FeatureCollection, assignation à quartiersData)
-            var features = rawData.map(function(item) {
-                var feature = item.geom;
-                if (!feature.properties) {
-                    feature.properties = {};
-                }
-                feature.properties.l_qu = item.l_qu || "Nom Indisponible";
-                feature.properties.c_ar = parseInt(item.c_ar, 10);
-                feature.properties.c_qu = String(item.c_qu);
-                feature.properties.c_quinsee = item.c_quinsee;
-                // feature.properties.habitants = item.habitants;
-                return feature;
-            });
+        .then(data => {
+            quartiersData = data; // Stocker les données pour un usage ultérieur (ex: avec Turf.js)
+            console.log("Données des quartiers chargées :", quartiersData);
 
-            quartiersData = {
-                "type": "FeatureCollection",
-                "features": features
-            };
-            console.log("Données des quartiers transformées:", quartiersData);
+            // Si votre JSON est un tableau de Features et non une FeatureCollection,
+            // il faudra peut-être l'encapsuler :
+            // var geoJsonData = { "type": "FeatureCollection", "features": data };
+            // Mais essayons d'abord avec 'data' directement. Si Leaflet s'en plaint, on ajustera.
 
-            quartiersLayer = L.geoJSON(quartiersData, {
-                style: styleQuartier,
+            quartiersLayer = L.geoJSON(data, { // Ou geoJsonData si vous avez fait l'encapsulation
+                style: function(feature) {
+                    // Style par défaut pour chaque quartier
+                    return {
+                        fillColor: getRandomColor(), // Une couleur aléatoire pour chaque quartier
+                        weight: 2,
+                        opacity: 1,
+                        color: 'white',  // Couleur de la bordure
+                        dashArray: '3',
+                        fillOpacity: 0.5
+                    };
+                },
                 onEachFeature: function(feature, layer) {
-                    // ... (votre logique onEachFeature pour les popups, mouseover, mouseout, click)
-                    var props = feature.properties;
-                    var nomQuartier = props.l_qu || "Nom Indisponible";
-                    var arrondissement = props.c_ar || "N/A";
-                    var nomPourLienEtImage = (nomQuartier).toLowerCase()
-                        .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-                        .replace(/\s+/g, '-')
-                        .replace(/[.'()]/g, '')
-                        .replace(/[^a-z0-9-]/g, '');
-                    var imagePath = 'images/' + nomPourLienEtImage + '.jpg';
-                    var articlePath = 'articles/' + nomPourLienEtImage + '.html';
-                    var descriptionHtml = descriptionsQuartiers[nomPourLienEtImage] || "<p>Informations à venir.</p>";
-                    var popupContent = `
-                        <div class="custom-popup">
-                            <div class="popup-image-container">
-                                <img src="${imagePath}" alt="${nomQuartier}" style="width:100%;" onerror="this.style.display='none'; this.parentElement.innerHTML+='<p style=\\'text-align:center; color:grey;\\'><i>Image non disponible</i></p>';">
-                            </div>
-                            <div class="popup-text-container">
-                                <h3>${nomQuartier} (${arrondissement}<sup>e</sup> arr.)</h3>
-                                <div class="quartier-description">${descriptionHtml}</div>
-                                <p style="margin-top:10px;"><a href="${articlePath}" target="_blank">Lire l'article →</a></p>
-                            </div>
-                        </div>`;
-                    layer.bindPopup(popupContent, { maxWidth: 350, maxHeight: 400 });
-                    layer.on('mouseover', function(e){ e.target.setStyle({ weight: 3, color: '#000', fillOpacity: 0.9 }); if(!L.Browser.ie && !L.Browser.opera && !L.Browser.edge){e.target.bringToFront();}});
-                    layer.on('mouseout', function(e){ e.target.setStyle(styleQuartier(e.target.feature)); });
-                    layer.on('click', function(e){ map.fitBounds(e.target.getBounds(), {padding: [50,50]}); });
+                    // Actions pour chaque quartier (popup, clic, etc.)
+                    var nomQuartier = feature.properties.l_qu || "Nom Indisponible"; // 'l_qu' est le nom du quartier dans votre JSON
+                    layer.bindPopup("<b>Quartier :</b> " + nomQuartier + "<br>Arrondissement : " + feature.properties.c_ar);
+
+                    // Optionnel : effet au survol
+                    layer.on('mouseover', function (e) {
+                        var currentLayer = e.target;
+                        currentLayer.setStyle({
+                            weight: 3,
+                            color: '#666',
+                            fillOpacity: 0.7
+                        });
+                        if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+                            currentLayer.bringToFront();
+                        }
+                    });
+                    layer.on('mouseout', function (e) {
+                        quartiersLayer.resetStyle(e.target); // Réinitialise au style défini dans L.geoJSON
+                    });
+
+                    // Gérer le clic sur un quartier (pour rediriger vers une page article)
+                    layer.on('click', function(e) {
+                        var props = e.target.feature.properties;
+                        var nomPourLien = (props.l_qu || "quartier-inconnu").toLowerCase()
+                            .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // Enlever les accents
+                            .replace(/\s+/g, '-') // Remplacer les espaces par des tirets
+                            .replace(/[^a-z0-9-]/g, ''); // Enlever les caractères non alphanumériques (sauf tiret)
+
+                        // Alert pour tester, avant de créer les pages articles
+                        alert("Vous avez cliqué sur : " + props.l_qu + "\nLien futur : articles/" + nomPourLien + ".html");
+                        // Plus tard : window.location.href = 'articles/' + nomPourLien + '.html';
+                    });
                 }
             }).addTo(map);
-            console.log("Couche des quartiers ajoutée.");
+
+            // Ajuster le zoom pour voir tous les quartiers si nécessaire
+            if (quartiersLayer.getBounds().isValid()) {
+                // map.fitBounds(quartiersLayer.getBounds()); // Décommentez si vous voulez que la carte zoome automatiquement sur les quartiers
+            }
+
         })
         .catch(error => {
-            console.error('Erreur GeoJSON:', error);
-            document.getElementById('map').innerHTML = '<p style="color:red;text-align:center;">Erreur chargement données quartiers.</p>';
+            console.error('Erreur lors du chargement ou du traitement du GeoJSON:', error);
+            // Afficher une erreur à l'utilisateur si le chargement échoue
+            var mapDiv = document.getElementById('map');
+            mapDiv.innerHTML = '<p style="color: red; text-align: center;">Impossible de charger les données des quartiers. Veuillez vérifier la console pour plus de détails.</p>';
         });
 
-    // --- FONCTIONNALITÉ "OÙ SUIS-JE ?" ---
-    const geolocateButton = document.getElementById('geolocate-btn');
-    const userQuartierInfoDiv = document.getElementById('user-quartier-info');
-
-    if (geolocateButton) {
-        geolocateButton.addEventListener('click', function() {
-            if (navigator.geolocation) {
-                // ... (code de la géolocalisation comme dans l'exemple précédent)
-                if (userQuartierInfoDiv) userQuartierInfoDiv.innerHTML = "Recherche...";
-                var geoOptions = { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 };
-                navigator.geolocation.getCurrentPosition(showPosition, showError, geoOptions);
-            } else {
-                if (userQuartierInfoDiv) userQuartierInfoDiv.textContent = "Géoloc non supportée.";
-                alert("Géolocalisation non supportée.");
-            }
-        });
+    // Fonction pour générer une couleur aléatoire (pour la démo)
+    function getRandomColor() {
+        var letters = '0123456789ABCDEF';
+        var color = '#';
+        for (var i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
     }
 
-    function showPosition(position) {
-        // ... (code de showPosition comme avant)
-        var lat = position.coords.latitude;
-        var lng = position.coords.longitude;
-        if (userMarker) map.removeLayer(userMarker);
-        userMarker = L.marker([lat, lng]).addTo(map).bindPopup("Vous êtes ici !").openPopup();
-        map.setView([lat, lng], 15);
-        findUserQuartier(lat, lng);
-    }
-
-    function showError(error) {
-        // ... (code de showError comme avant)
-        let message = "Erreur géoloc: ";
-        switch(error.code) {
-            case error.PERMISSION_DENIED: message += "Permission refusée."; break;
-            case error.POSITION_UNAVAILABLE: message += "Position indisponible."; break;
-            case error.TIMEOUT: message += "Timeout."; break;
-            default: message += "Erreur inconnue."; break;
-        }
-        if (userQuartierInfoDiv) userQuartierInfoDiv.textContent = message;
-        console.error(message, error);
-        alert(message);
-    }
-
-    function findUserQuartier(lat, lng) {
-        // ... (code de findUserQuartier comme avant, utilisant styleQuartier pour le reset)
-        if (!quartiersData || !quartiersData.features || !quartiersLayer) {
-            if (userQuartierInfoDiv) userQuartierInfoDiv.textContent = "Données quartiers non chargées.";
-            return;
-        }
-        var userPoint = turf.point([lng, lat]);
-        var foundQuartierName = null;
-        var foundQuartierFeature = null;
-
-        quartiersLayer.eachLayer(function(layer) {
-            layer.setStyle(styleQuartier(layer.feature));
-        });
-
-        for (var i = 0; i < quartiersData.features.length; i++) {
-            var qFeature = quartiersData.features[i];
-            if (turf.booleanPointInPolygon(userPoint, qFeature.geometry)) {
-                foundQuartierFeature = qFeature;
-                foundQuartierName = qFeature.properties.l_qu || "Quartier inconnu";
-                break;
-            }
-        }
-
-        if (foundQuartierFeature && userQuartierInfoDiv) {
-            userQuartierInfoDiv.innerHTML = `Vous êtes : <strong>${foundQuartierName}</strong> (${foundQuartierFeature.properties.c_ar}<sup>e</sup>).`;
-            quartiersLayer.eachLayer(function(layer) {
-                if (layer.feature.properties.c_quinsee === foundQuartierFeature.properties.c_quinsee) {
-                    layer.setStyle({ fillColor: '#ffc107', fillOpacity: 0.8, weight: 3, color: '#000' });
-                    if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) { layer.bringToFront(); }
-                }
-            });
-        } else if (userQuartierInfoDiv) {
-            userQuartierInfoDiv.textContent = "Hors de Paris ou quartier non détecté.";
-        }
-    }
+    // Le code pour la géolocalisation ("Où suis-je ?") sera ajouté ici plus tard
+    // ...
 
 }); // Fin de DOMContentLoaded
