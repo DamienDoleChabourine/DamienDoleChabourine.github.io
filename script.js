@@ -16,6 +16,9 @@ document.addEventListener('DOMContentLoaded', function () {
         'default': '#cccccc' // Couleur par défaut
     };
 
+    const descriptionsQuartiers = {
+    };
+
 
     // --- FONCTIONS UTILITAIRES ---
     function adjustColor(color, amount) {
