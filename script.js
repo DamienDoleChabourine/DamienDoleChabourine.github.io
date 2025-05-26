@@ -2,104 +2,150 @@
 document.addEventListener('DOMContentLoaded', function () {
 
     // 1. Initialiser la carte Leaflet
-    var map = L.map('map').setView([48.8566, 2.3522], 12); // Centré sur Paris
+    var map = L.map('map').setView([48.8566, 2.3522], 12);
 
-    // 2. Ajouter un fond de carte (Tile Layer)
+    // 2. Ajouter un fond de carte
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '© <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
 
-    var quartiersLayer; // Variable pour stocker la couche des quartiers
-    var quartiersData;  // Variable pour stocker les données GeoJSON brutes
+    var quartiersLayer;
+    var quartiersData;
 
-    // 3. Charger les données GeoJSON des quartiers
-      
-fetch('data/quartier_paris.json')
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Erreur réseau lors du chargement du GeoJSON : ' + response.statusText);
+    // Couleurs de base pour les 20 arrondissements (vous pouvez les personnaliser)
+    // Source: https://medialab.github.io/iwanthue/ (par exemple, pour générer des couleurs distinctes)
+    const arrondissementColors = {
+        1: '#d44a7a',  2: '#5ad44a',  3: '#4a7ad4',  4: '#d4a04a',
+        5: '#4ad4c1',  6: '#a04ad4',  7: '#d4d44a',  8: '#4a91d4',
+        9: '#d44a4a', 10: '#4ad47a', 11: '#7a4ad4', 12: '#d47a4a',
+        13: '#4a9fd4', 14: '#d44ac1', 15: '#7ad44a', 16: '#4a4ad4',
+        17: '#c1d44a', 18: '#d44a91', 19: '#4ad4a0', 20: '#d4a0d4'
+    };
+
+    // Fonction pour ajuster la luminosité d'une couleur HEX
+    // amount < 0 pour foncer, amount > 0 pour éclaircir
+    function adjustColor(color, amount) {
+        let usePound = false;
+        if (color[0] === "#") {
+            color = color.slice(1);
+            usePound = true;
         }
-        return response.json();
-    })
-    .then(data => {
-        // 'data' est ici votre tableau d'objets [ { ... geom: {Feature} ...}, { ... } ]
-
-        // Transformer les données en une FeatureCollection valide pour Leaflet
-        var features = data.map(function(item) {
-            // L'objet Feature GeoJSON est dans item.geom
-            // Nous devons aussi nous assurer que les propriétés que nous voulons utiliser
-            // (comme l_qu, c_ar) sont dans les "properties" de la Feature.
-            // Si elles sont au niveau supérieur de 'item', il faut les copier.
-
-            var feature = item.geom; // item.geom EST déjà une Feature
-
-            // Assurons-nous que les propriétés utiles sont bien dans feature.properties
-            // Si elles sont dans item et pas dans item.geom.properties, on les copie :
-            if (!feature.properties) {
-                feature.properties = {};
-            }
-            feature.properties.l_qu = item.l_qu || "Nom Indisponible";
-            feature.properties.c_ar = item.c_ar || "N/A";
-            // Ajoutez d'autres propriétés de 'item' que vous voulez transférer ici
-
-            return feature;
-        });
-
-        var geoJsonData = {
-            "type": "FeatureCollection",
-            "features": features
-        };
-
-        quartiersData = geoJsonData; // Stocker la FeatureCollection transformée
-        console.log("Données des quartiers transformées en FeatureCollection :", quartiersData);
-
-        quartiersLayer = L.geoJSON(quartiersData, { // Utiliser les données transformées
-            style: function(feature) {
-                // ... (le reste de la fonction style reste pareil) ...
-                return {
-                    fillColor: getRandomColor(),
-                    weight: 2,
-                    opacity: 1,
-                    color: 'white',
-                    dashArray: '3',
-                    fillOpacity: 0.5
-                };
-            },
-            onEachFeature: function(feature, layer) {
-                // ... (le reste de onEachFeature reste pareil,
-                // MAIS assurez-vous que les propriétés sont accessibles via feature.properties) ...
-                var nomQuartier = feature.properties.l_qu || "Nom Indisponible";
-                var arrondissement = feature.properties.c_ar || "N/A";
-                layer.bindPopup("<b>Quartier :</b> " + nomQuartier + "<br>Arrondissement : " + arrondissement);
-
-                // ... (mouseover, mouseout, click comme avant) ...
-            }
-        }).addTo(map);
-
-        if (quartiersLayer.getBounds().isValid()) {
-            // map.fitBounds(quartiersLayer.getBounds());
-        }
-
-    })
-    .catch(error => {
-        console.error('Erreur lors du chargement ou du traitement du GeoJSON:', error);
-        var mapDiv = document.getElementById('map');
-        mapDiv.innerHTML = '<p style="color: red; text-align: center;">Impossible de charger/traiter les données des quartiers. Vérifiez la console.</p>';
-    });
-
-
-    // Fonction pour générer une couleur aléatoire (pour la démo)
-    function getRandomColor() {
-        var letters = '0123456789ABCDEF';
-        var color = '#';
-        for (var i = 0; i < 6; i++) {
-            color += letters[Math.floor(Math.random() * 16)];
-        }
-        return color;
+        const num = parseInt(color, 16);
+        let r = (num >> 16) + amount;
+        if (r > 255) r = 255;
+        else if (r < 0) r = 0;
+        let b = ((num >> 8) & 0x00FF) + amount;
+        if (b > 255) b = 255;
+        else if (b < 0) b = 0;
+        let g = (num & 0x0000FF) + amount;
+        if (g > 255) g = 255;
+        else if (g < 0) g = 0;
+        return (usePound ? "#" : "") + String("000000" + (g | (b << 8) | (r << 16)).toString(16)).slice(-6);
     }
 
-    // Le code pour la géolocalisation ("Où suis-je ?") sera ajouté ici plus tard
-    // ...
+    // Pour stocker un index de quartier par arrondissement (pour le dégradé)
+    let quartierIndexByArrondissement = {};
 
-}); // Fin de DOMContentLoaded
+    // 3. Charger les données GeoJSON des quartiers
+    fetch('data/quartier_paris.json')
+        .then(response => response.json())
+        .then(data => {
+            var features = data.map(function(item) {
+                var feature = item.geom;
+                if (!feature.properties) {
+                    feature.properties = {};
+                }
+                feature.properties.l_qu = item.l_qu || "Nom Indisponible";
+                feature.properties.c_ar = parseInt(item.c_ar, 10); // Assurez-vous que c_ar est un nombre
+                feature.properties.c_qu = item.c_qu; // On aura besoin du code quartier pour le dégradé
+                return feature;
+            });
+
+            var geoJsonData = {
+                "type": "FeatureCollection",
+                "features": features
+            };
+
+            quartiersData = geoJsonData;
+            console.log("Données des quartiers transformées :", quartiersData);
+
+            quartiersLayer = L.geoJSON(quartiersData, {
+                style: function(feature) {
+                    const arrondissement = feature.properties.c_ar;
+                    const codeQuartier = feature.properties.c_qu; // Ou un autre identifiant unique du quartier dans l'arrondissement
+
+                    let baseColor = arrondissementColors[arrondissement] || '#cccccc'; // Couleur par défaut grise
+
+                    // Initialiser le compteur pour cet arrondissement s'il n'existe pas
+                    if (!quartierIndexByArrondissement[arrondissement]) {
+                        quartierIndexByArrondissement[arrondissement] = 0;
+                    }
+
+                    // Obtenir les quartiers de cet arrondissement et les trier (par c_qu par exemple)
+                    // pour avoir un ordre consistent pour le dégradé
+                    const quartiersDeLArrondissement = quartiersData.features
+                        .filter(f => f.properties.c_ar === arrondissement)
+                        .sort((a, b) => (a.properties.c_qu || "").localeCompare(b.properties.c_qu || ""));
+
+                    // Trouver l'index de ce quartier dans la liste triée des quartiers de son arrondissement
+                    let quartierRank = quartiersDeLArrondissement.findIndex(q => q.properties.c_qu === codeQuartier);
+                    if (quartierRank === -1) quartierRank = 0; // fallback
+
+                    // Créer un dégradé simple (4 teintes)
+                    // Par exemple, on va de -60 (plus foncé) à +60 (plus clair) par pas de 40
+                    // Teinte 0: -60, Teinte 1: -20, Teinte 2: +20, Teinte 3: +60
+                    let teinteAdjustment = -60 + (quartierRank * 40);
+                    // S'assurer qu'on ne dépasse pas 3 teintes, au cas où il y aurait plus de 4 quartiers par erreur
+                    if (quartierRank > 3) teinteAdjustment = 60;
+
+
+                    let finalColor = adjustColor(baseColor, teinteAdjustment);
+
+                    return {
+                        fillColor: finalColor,
+                        weight: 1, // Bordure plus fine
+                        opacity: 1,
+                        color: 'white',
+                        fillOpacity: 0.7 // Un peu plus opaque pour mieux voir les couleurs
+                    };
+                },
+                onEachFeature: function(feature, layer) {
+                    var nomQuartier = feature.properties.l_qu || "Nom Indisponible";
+                    var arrondissement = feature.properties.c_ar || "N/A";
+                    layer.bindPopup("<b>Quartier :</b> " + nomQuartier + "<br>Arrondissement : " + arrondissement);
+
+                    layer.on('mouseover', function (e) {
+                        var currentLayer = e.target;
+                        currentLayer.setStyle({
+                            weight: 3,
+                            color: '#000', // Bordure noire au survol
+                            fillOpacity: 0.9
+                        });
+                        if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+                            currentLayer.bringToFront();
+                        }
+                    });
+                    layer.on('mouseout', function (e) {
+                        quartiersLayer.resetStyle(e.target);
+                    });
+
+                    layer.on('click', function(e) {
+                        var props = e.target.feature.properties;
+                        var nomPourLien = (props.l_qu || "quartier-inconnu").toLowerCase()
+                            .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+                            .replace(/\s+/g, '-')
+                            .replace(/[^a-z0-9-]/g, '');
+                        alert("Vous avez cliqué sur : " + props.l_qu + "\nLien futur : articles/" + nomPourLien + ".html");
+                    });
+                }
+            }).addTo(map);
+
+             if (quartiersLayer.getBounds().isValid()) {
+                 // map.fitBounds(quartiersLayer.getBounds());
+             }
+        })
+        .catch(error => console.error('Erreur de chargement du GeoJSON:', error));
+
+    // ... (code du bouton de géolocalisation à ajouter ici plus tard)
+});
