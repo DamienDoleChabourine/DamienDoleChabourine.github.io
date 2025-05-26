@@ -1,30 +1,4 @@
-// Déclaration des variables qui excuses si la structure est devenue un peu confuse avec les ajouts successifs !
-
-Vous avez raison de demander des éclaircissements. Essayons de réorganiser le `script.js` pour que pourraient être utilisées globalement dans ce script
-var map; // Pour l'objet carte Leaflet
-var quartiersLayer; // ce soit plus clair.
-
-L'idée est d'avoir :
-1.  Les variables globales et les défin Pour la couche GeoJSON des quartiers
-var quartiersData;  // Pour stocker les données GeoJSON brutes/itions de fonctions utilitaires (comme `arrondissementColors`, `adjustColor`, `styleQuartier`) en hauttransformées
-var userMarker; // Pour le marqueur de position de l'utilisateur
-// var previousHighlightedLayer du script (mais toujours à l'intérieur de `DOMContentLoaded` si elles dépendent d'éléments du DOM qui ne = null; // On va gérer la réinitialisation différemment
-
-// Couleurs de base pour les 20 arrondissements (PERSONNALISEZ-LES !)
-const arrondissementColors = {
-    1: '#d44a7a',  2: '#5ad44a',  3: '#4a7ad4',  4: '#d sont pas encore là, bien que pour celles-ci, ce ne soit pas strictement nécessaire).
-2.  L'initialisation de la carte.
-3.  Le `fetch` des données GeoJSON, et dans son `.then()`,4a04a',
-    5: '#4ad4c1',  6: '#a04ad4',  7: '#d4d44a',  8: '#4a91d4',
-    9: '#d44a4a', 10: '#4ad47a', 1 la création de la couche `quartiersLayer` avec la logique `onEachFeature`.
-4.  Ensuite, la logique pour le bouton de géolocalisation.
-
-Voici une structure plus ordonnée pour votre `script.js` inté1: '#7a4ad4', 12: '#d47a4a',
-    13: '#4a9fd4', 14: '#d44ac1', 15: '#grant toutes les fonctionnalités dont nous avons parlé (carte, couleurs/dégradés, popups améliorés, géol7ad44a', 16: '#4a4ad4',
-    17: '#cocalisation avec correction du style). **Remplacez l'intégralité de votre `script.js` actuel1d44a', 18: '#d44a91', 19: '#4ad4 par ce qui suit :**
-
-```javascript
-document.addEventListener('DOMContentLoaded', function () {
+DOMContentLoaded', function () {
 
     // --- VARIABLESa0', 20: '#d4a0d4',
     // Ajoutez une couleur par défaut si un arrondissement n'est pas trouvé
