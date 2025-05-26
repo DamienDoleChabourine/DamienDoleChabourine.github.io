@@ -11,7 +11,7 @@
     width: 100%;
     height: auto;
     display: block;
-    margin-bottom: 10px; /* Espace entre l'image et le texte */
+    margin-bottom: 10px; 
 }
 .popup-text-container {
     padding: 5px;
