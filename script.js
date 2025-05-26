@@ -16,17 +16,33 @@ document.addEventListener('DOMContentLoaded', function () {
         'default': '#cccccc' // Couleur par défaut
     };
 
-    // (L'objet descriptionsQuartiers devrait être ici aussi si vous l'utilisez pour les popups)
     const descriptionsQuartiers = {
-        "gare": `<ul><li>Les + belles vues sont dans ses tours</li>...</ul>`,
-        // ... VOS 80 DESCRIPTIONS ...
-        "sainte-marguerite": `<ul><li>L'un des endroits les + chouettes...</li>...</ul>`
+        "gare": `<ul><li>Les + belles vues sont dans ses tours</li><li>Les photographes l'adorent (vues, perspectives, street-art, bouffe)</li><li>Seul et unique quartier asiat</li><li>L'un ds derniers quartiers mixtes socialement</li><li>Meilleur quartier de Paris (j'y habite, vous pouvez me faire confiance)</li></ul>`,
+        "pere-lachaise": `<ul><li>Le Père-Lachaise est objectivement le cimetière le + ouf de Paris</li><li>Les admirateurs de la Commune y sont chaque année (+500 points)</li><li>Saint-Sauveur</li><li>Plein de lieux sympas (bars, restos, théâtre de La Colline, rues etc.)</li></ul>`,
+        "villette": `<ul><li>Le canal est BEAU</li><li>Des cinés, des bars, des grecs, le Centquatre, des grandes tours etc. etc.</li><li>Les prix des loyers permettent aux gens normaux d'y habiter encore un peu</li><li>La gentrification ne passera pas (trop) par là (on a le droit de rêver, nan ?)</li></ul>`,
+        "maison-blanche": `<ul><li>Butte-aux-Cailles = quartier sous-coté pour sortir en termes de restos et bars</li><li>Siège des Amis de la Commune (+1500 points)</li><li>Quartier de la poterne injustement méconnu même si un peu mort</li><li>Commerces de bouches de haute qualité</li><li>Trois parcs dingos</li></ul>`,
+        "halles": `<ul><li>Si Paris avait un centre symbolique, ce serait celui-là</li><li>Trois lignes de RER = on rigole plus qu'ailleurs</li><li>Capitale délocalisée de la banlieue (ça ennuie les droitards donc + 300 points)</li><li>600 restos + bars</li><li>Paris EST sa banlieue donc top 5, oui.</li></ul>`,
+        "amerique": `<ul><li>La Mouzaïa, rêve des Instragameurs et des Parisiens qui aimeraient une maison (avec 5 m2 de jardin). Et c'est beau.</li><li>Parc de la butte-du-Chapeau-Rouge = Jaurès</li><li>On peut y manger pour des prix normaux, presque y habiter aussi</li><li>Glorieuse place des Fêtes</li></ul>`,
+        "notre-dame": `<ul><li>Je veux bien privilégier le Paris populairo-bobo, mais deux îles irréelles et magnifiques là, je cède</li><li>Place LOUIS-ARAGON (ceux qui ont lu "Aurélien" y vont en pèlerinage)</li><li>Les quais de Seine pour une soirée romantico-pas chère</li><li>Berthillon (c'est tout)</li></ul>`,
+        "clignancourt": `<ul><li>Basilique du Sacré-Cœur = haine de Paris...</li><li>... MAIS square Louise-Michel = amour de Paris</li><li>Des touristes à la pelle...</li><li>... mais qui n'a pas dragué quelqu'un sur ces marches ?</li><li>Restos et bars stylés quand on sort de la Butte</li></ul>`,
+        "folie-mericourt": `<ul><li>Le quartier qui se transforme la nuit</li><li>Quand on ne sait pas quoi faire, on peut toujours "aller à Oberkampf"</li><li>Restos de ouf</li><li>Dernière barricade de la Commune de Paris (enfin pas vraiment mais y a une plaque donc +1000 points)</li></ul>`,
+        "belleville": `<ul><li>Quartier génial qui voit un Jourdain bobo proche de rues + populaires (je sais pas si c'est bien mais c'est comme ça)</li><li>Le parc de Belleville est sympa (mais trop blindé l'été, soyez honnêtes, arrêtez de trafiquer les angles de vue sur Instagram)</li></ul>`,
+        "pont-de-flandre": `<ul><li>Des salles de concert partout</li><li>Ambiance dans le Parc de la Villette géniale, surtout l'été</li><li>La Cité des enfants a sauvé la vie de milliers de parents franciliens</li><li>La débile rue de grands magasins à Rosa Parks lui fait louper le top 10</li></ul>`,
+        "saint-merri": `<ul><li>L'église de Saint-Merri est dingue et l'histoire de Médéric/Merri géniale (numéro 2 derrière Sainte-Geneviève)</li><li>L'Hôtel de ville et sa place sont juste trop belles</li><li>Place de GREVE</li><li>Partie du Marais assez sympa</li></ul>`,
+        "porte-saint-martin": `<ul><li>Les quais du canal sont drôles (et beau en hiver le matin)</li><li>On va dire que Répu est dans ce quartier (elle est dans 4 en fait) et donc ben c'est mortel depuis ses travaux (pas assez d'arbres mais les voitures ont jarté)</li><li>On y mange bien</li></ul>`,
+        "palais-royal": `<ul><li>Perspective magique de l'avenue de l'Opéra</li><li>Jardin du Palais royal injustement moins connu que d'autres</li><li>Comédie-Française et colonnes de Buren</li><li>Plus chiant que ses voisins mais tellement beau</li><li>Moitié des restos du quartier japonais</li></ul>`,
+        "quinze-vingts": `<ul><li>Quartier d'Aligre toujours bien sympa</li><li>Marché d'Aligre = ROI</li><li>La gare de Lyon est BELLE</li><li>Deux hôpitaux qui prennent de la place et pourtant il y a de la vie</li></ul>`,
+        "porte-saint-denis": `<ul><li>L'un des quartiers les plus sympas pour sortir le soir à Paris</li><li>Restos turques, kurdes ou syriens dingos</li><li>Si t'y habites, vaut mieux avoir du triple vitrage (ou ne revenir qu'à 2 heures du matin)</li></ul>`,
+        "roquette": `<ul><li>Enormément de bons restos</li><li>Seul endroit de Paris où tu peux te faire recaler de 5 bars de suite</li><li>Théorème de la rue de Lappe : "Si tu restes une heure dehors dans cette rue, tu assisteras au moins à une bagarre à partir de 22 heures" (donc endroit drôle)</li></ul>`,
+        "saint-victor": `<ul><li>Parmi les plus beaux quais de Seine, ambiance dingo le soir avec tous les danseurs</li><li>Quelques restos pas mal</li><li>Arènes de Lutèce trop sous-cotées</li></ul>`,
+        "batignolles": `<ul><li>Des restos assez ouf (le quartier va de l'autre côté des voies)</li><li>Quand on surplombe les voies de Saint-Lazare, c'est cool</li><li>Le parc des Batignolles est mignon</li><li>Si la gentrification achevée à Paris avait un nom, ce serait Batignolles</li></ul>`,
+        "sainte-marguerite": `<ul><li>L'un des endroits les + chouettes de Paris pour manger le soir (si on veut lâcher 30 euros et qu'on prend pas d'alcool)</li><li>Les crêpes jusqu'au bout de la nuit</li><li>Pourquoi sa partie de la place de la Nation a + de gens bizarres que celle d'en face ?</li></ul>`
+        // ... Pensez à compléter pour les 80 quartiers si vous voulez que tous aient une description !
     };
 
 
     // --- FONCTIONS UTILITAIRES ---
     function adjustColor(color, amount) {
-        // ... (votre code adjustColor existant, il est correct)
         let usePound = false;
         if (color[0] === "#") {
             color = color.slice(1);
@@ -34,39 +50,25 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         const num = parseInt(color, 16);
         let r = (num >> 16) + amount;
-        if (r > 255) r = 2 de m'avoir fourni tout le code ! J'ai repéré le problème.
-
-Vous avez **deux** blocs `document.addEventListener('DOMContentLoaded', function () { ... });`.
-
-*   Le premier commence au tout début de votre fichier.
-*   Le second commence juste avant la section `// --- DÉBUT DE LA FONCTIONNALITÉ "OÙ SUIS-JE ?" ---`.
-
-**Le problème :**
-
-L'écouteur d'événement `DOMContentLoaded` est conçu pour s'exécuter une seule fois, lorsque le document HTML initial est complètement chargé et analysé. Si vous en avez deux, le comportement peut être imprévisible, ou plus probablement, seul le premier s'exécutera de manière à ce que les variables déclarées à l'intérieur soient correctement "scopées" (accessibles) pour tout le code qu'il contient.
-
-Le code pour la géolocalisation (qui attache l'écouteur au bouton) se trouve dans le *deuxième* `DOMContentLoaded`. Si les variables comme `map`, `quartiersData`, `quartiersLayer` sont définies dans le *premier* `DOMContentLoaded`, elles ne seront pas directement accessibles dans le scope du deuxième de la manière dont le code est écrit.
-
-**Solution : Fusionner en un seul `DOMContentLoaded`**
-
-Vous devez avoir **un seul et unique** `document.addEventListener('DOMContentLoaded', function () {55; else if (r < 0) r = 0;
+        if (r > 255) r = 255; // CORRIGÉ
+        else if (r < 0) r = 0;
         let b = ((num >> 8) & 0x00FF) + amount;
-        if (b > 255) b = 255; else if (b < 0) b = 0;
+        if (b > 255) b = 255; // CORRIGÉ
+        else if (b < 0) b = 0;
         let g = (num & 0x0000FF) + amount;
-        if (g > 255) g = 255; else if (g < 0) g = 0;
+        if (g > 255) g = 255; // CORRIGÉ
+        else if (g < 0) g = 0;
         return (usePound ? "#" : "") + String("000000" + (g | (b << 8) | (r << 16)).toString(16)).slice(-6);
     }
 
-    let quartierIndexByArrondissement = {}; // Doit être à l'extérieur de styleQuartier si on veut qu'il persiste
+    // (La variable quartierIndexByArrondissement n'est plus nécessaire avec la nouvelle logique de styleQuartier)
 
     function styleQuartier(feature) {
-        // ... (votre code styleQuartier existant, il semble correct, mais assurez-vous
-        // que quartierIndexByArrondissement est bien géré si vous l'utilisez pour le dégradé)
-        // OU la version plus simple si quartiersData est déjà la FeatureCollection :
         const arrondissement = feature.properties.c_ar;
-        const codeQuartier = feature.properties.c_qu;
+        const codeQuartier = feature.properties.c_qu; // Code du quartier (ex: "29" pour Champs-Elysées)
         let baseColor = arrondissementColors[arrondissement] || arrondissementColors['default'];
 
+        // Assurer que quartiersData (la FeatureCollection) est disponible
         if (!quartiersData || !quartiersData.features) {
             return { fillColor: baseColor, weight: 1, opacity: 1, color: 'white', fillOpacity: 0.5 };
         }
@@ -110,106 +112,14 @@ Vous devez avoir **un seul et unique** `document.addEventListener('DOMContentLoa
         })
         .then(rawData => { // rawData est le tableau d'objets original de votre JSON
             var features = rawData.map(function(item) {
-                var feature = item.geom;
+                var feature = item.geom; // item.geom est la Feature GeoJSON
                 if (!feature.properties) { feature.properties = {}; }
-                feature.properties.l_qu = item.l_ ... });` qui englobe TOUT votre code JavaScript qui interagit avec le DOM ou qui doit s'exécuter après le chargement du DOM.
-
-**Voici la structure corrigée de votre `script.js` :**
-
-```javascript
-// Attendre que le DOM soit entièrement chargé UNE SEULE FOIS
-document.addEventListener('DOMContentLoaded', function () {
-
-    // 1. Initialiser la carte Leaflet
-    var map = L.map('map').setView([48.8566, 2.3522], 12);
-
-    // 2. Ajouter un fond de carte
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        attribution: '© <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    }).addTo(map);
-    console.log("Carte Leaflet initialisée."); // Log pour vérifier l'initialisation
-
-    var quartiersLayer;
-    var quartiersData; // Sera notre FeatureCollection après transformation
-
-    // Couleurs de base pour les 20 arrondissements
-    const arrondissementColors = {
-        1: '#d44a7a',  2: '#7B6E6B',  3: '#4a7ad4',  4: '#d4a04a',
-        5: '#DE7F11',  6: '#a04ad4',  7: '#d4d44a',  8: '#4a91d4',
-        9: '#d44a4a', 10: '#7a4ad4', 11: '#4ad47a', 12: '#0F39D2',
-        13: '#A4181B', 14: '#7ad44a', 15: '#d44ac1', 16: '#4a4ad4',
-        17: '#c1d44a', 18: '#d44a91', 19: '#FF4400', 20: '#882D17',
-        'default': '#cccccc' // Ajout d'une couleur par défaut
-    };
-
-    // Fonction pour ajuster la luminosité
-    function adjustColor(color, amount) {
-        let usePound = false;
-        if (color[0] === "#") {
-            color = color.slice(1);
-            usePound = true;
-        }
-        const num = parseInt(color, 16);
-        let r = (num >> 16) + amount;
-        if (r > 255) r = 255; else if (r < 0) r = 0;
-        let b = ((num >> 8) & 0x00FF) + amount;
-        if (b > 255) b = 255; else if (b < 0) b = 0;
-        let g = (num & 0x0000FF) + amount;
-        if (g > 255) g = 255; else if (g < 0) g = 0;
-        return (usePound ? "#" : "") + String("000000" + (g | (b << 8) | (r << 16)).toString(16)).slice(-6);
-    }
-
-    // Fonction de style principale pour les quartiers
-    function styleQuartier(feature) {
-        const arrondissement = feature.properties.c_ar;
-        const codeQuartier = feature.properties.c_qu;
-        let baseColor = arrondissementColors[arrondissement] || arrondissementColors['default'];
-
-        if (!quartiersData || !quartiersData.features) {
-            return { fillColor: baseColor, weight: 1, opacity: 1, color: 'white', fillOpacity: 0.5 };
-        }
-
-        const quartiersDeLArrondissement = quartiersData.features
-            .filter(f => f.properties.c_ar === arrondissement)
-            .sort((a, b) => (String(a.properties.c_qu) || "").localeCompare(String(b.properties.c_qu) || ""));
-
-        let quartierRank = quartiersDeLArrondissement.findIndex(q => q.properties.c_qu === codeQuartier);
-        if (quartierRank === -1) quartierRank = 0;
-
-        let teinteAdjustment = -60 + (quartierRank * 40);
-        if (quartierRank > 3) teinteAdjustment = 60;
-
-        let finalColor = adjustColor(baseColor, teinteAdjustment);
-
-        return {
-            fillColor: finalColor,
-            weight: 1,
-            opacity: 1,
-            color: 'white',
-            fillOpacity: 0.7
-        };
-    }
-    
-    // L'objet descriptionsQuartiers (à compléter)
-    const descriptionsQuartiers = {
-        "gare": `<ul><li>Les + belles vues sont dans ses tours</li>...</ul>`,
-        // ... Ajoutez les autres descriptions ici ...
-        "sainte-marguerite": `<ul><li>L'un des endroits les + chouettes...</li></ul>`
-    };
-
-
-    // 3. Charger les données GeoJSON des quartiers
-    fetch('data/quartier_paris.json')
-        .then(response => {
-            if (!response.ok) { // Vérification si le fetch a réussi
-                throw new Error('Erreur réseau lors du chargement du GeoJSON: ' + response.statusText);
-            }
-            return response.jsonqu || "Nom Indisponible";
+                // Copier les propriétés de haut niveau de 'item' dans 'feature.properties'
+                feature.properties.l_qu = item.l_qu || "Nom Indisponible";
                 feature.properties.c_ar = parseInt(item.c_ar, 10);
-                feature.properties.c_qu = String(item.c_qu); // Pour un tri alphabétique fiable
-                feature.properties.c_quinsee = item.c_quinsee;
-                // feature.properties.habitants = item.habitants; // Si vous les ajoutez
+                feature.properties.c_qu = String(item.c_qu); // Assurer que c_qu est une chaîne pour le tri
+                feature.properties.c_quinsee = item.c_quinsee; // Important pour l'identification unique
+                // feature.properties.habitants = item.habitants; // Décommentez si vous avez les habitants
                 return feature;
             });
 
@@ -268,23 +178,17 @@ document.addEventListener('DOMContentLoaded', function () {
             }).addTo(map);
             console.log("Couche des quartiers ajoutée à la carte.");
 
-            // Optionnel: ajuster le zoom pour voir tous les quartiers
-            // if (quartiersLayer.getBounds().isValid()) {
-            //     map.fitBounds(quartiersLayer.getBounds());
-            // }
         })
         .catch(error => {
             console.error('Erreur finale dans le traitement GeoJSON:', error);
             var mapDiv = document.getElementById('map');
-            mapDiv.innerHTML = '<p style="color: red; text-align: center;">Impossible de charger/traiter les données des quartiers. (Détails dans la console)</p>';
+            if (mapDiv) { // Vérifier que mapDiv existe
+                 mapDiv.innerHTML = '<p style="color: red; text-align: center;">Impossible de charger/traiter les données des quartiers. (Détails dans la console)</p>';
+            }
         });
 
 
-    // --- DÉBUT DE LA FONCTIONNALITÉ "OÙ SUIS-JE ?" ---
-    // (Le code pour la géolocalisation que je vous ai fourni précédemment,
-    // y compris la récupération de geolocateButton et userQuartierInfoDiv,
-    // l'addEventListener, showPosition, showError, et findUserQuartier)
-
+    // --- FONCTIONNALITÉ "OÙ SUIS-JE ?" ---
     const geolocateButton = document.getElementById('geolocate-btn');
     const userQuartierInfoDiv = document.getElementById('user-quartier-info');
 
@@ -343,6 +247,8 @@ document.addEventListener('DOMContentLoaded', function () {
         var foundQuartierName = null;
         var foundQuartierArrondissement = null;
 
+        // Pas besoin de réinitialiser les styles ici si on ne les change pas pour la géoloc
+
         for (var i = 0; i < quartiersData.features.length; i++) {
             var qFeature = quartiersData.features[i];
             if (turf.booleanPointInPolygon(userPoint, qFeature.geometry)) {
@@ -365,4 +271,4 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     // --- FIN DE LA FONCTIONNALITÉ "OÙ SUIS-JE ?" ---
 
-}); // Fin de DOMContentLoaded (il ne doit y en avoir qu'un seul qui ferme tout)
+}); // Fin de L'UNIQUE DOMContentLoaded
