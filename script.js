@@ -126,14 +126,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     var popupContent = `
                         <div class="custom-popup">
                             <div class="popup-image-container">
-<img src="${imagePath}" 
+                            <img src="${imagePath}" 
      alt="Image du quartier ${nomQuartier}" 
      style="width:100%; height:auto; display:block;" 
-     onerror="if (!this.classList.contains('error-handled')) { 
-                  this.style.display='none'; 
-                  this.parentElement.innerHTML+='<p style=\\'text-align:center; color:grey;\\'><i>Image non disponible</i></p>'; 
-                  this.classList.add('error-handled'); 
-              }">                            </div>
+     onerror="this.outerHTML='<p style=\\'text-align:center; color:grey; padding:10px;\\'><i>Image non disponible pour ${nomQuartier}</i></p>';">
+                            </div>
                             <div class="popup-text-container">
                                 <h3>${nomQuartier} (${arrondissement}<sup>e</sup> arr.)</h3>
 
