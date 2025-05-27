@@ -51,15 +51,83 @@
     margin-bottom: 5px;
 }
 
-/* Ajustements pour que le popup Leaflet s'adapte mieux au contenu large */
+/* Style général du corps du popup Leaflet */
 .leaflet-popup-content-wrapper {
-    /* Vous pouvez augmenter le padding par défaut si besoin */
-    /* padding: 10px; */
+    /* background: #f8f8f8; /* Un fond légèrement différent si vous voulez */
+    /* border-radius: 8px; */
+    /* box-shadow: 0 2px 10px rgba(0,0,0,0.2); */
 }
 
 .leaflet-popup-content {
-    margin: 10px 15px; /* Augmenter les marges internes du contenu du popup */
-    width: auto !important; /* Important pour que maxWidth fonctionne bien */
-    max-height: 400px; /* Limite pour la hauteur totale du contenu */
-    overflow-y: auto;
+    margin: 13px 19px; /* Un peu plus d'espace intérieur */
+    width: auto !important; /* Pour que maxWidth fonctionne bien */
+    max-height: 330px; /* Hauteur max avant scroll, ajustez selon vos besoins */
+    overflow-y: auto;  /* Barre de défilement si le contenu dépasse */
+    font-size: 14px;   /* Taille de police de base pour le popup */
+}
+
+/* Classe spécifique pour nos popups si on veut plus de contrôle que .leaflet-popup-content */
+.custom-leaflet-popup .leaflet-popup-content {
+    /* Vous pouvez ajouter des styles spécifiques ici si besoin */
+}
+
+
+.custom-popup { /* Conteneur principal de notre contenu HTML dans le popup */
+    /* width: 350px; /* La largeur sera contrôlée par maxWidth de bindPopup */
+}
+
+.custom-popup .popup-image-container {
+    margin-bottom: 10px;
+}
+
+.custom-popup .popup-image-container img {
+    border-radius: 4px;
+    max-height: 150px; /* Limiter la hauteur de l'image pour ne pas écraser le texte */
+    object-fit: cover; /* S'assure que l'image couvre bien son conteneur sans se déformer */
+}
+
+.custom-popup .popup-text-container {
+    padding: 0 5px 5px 5px;
+}
+
+.custom-popup h3 {
+    margin-top: 0;
+    margin-bottom: 8px;
+    font-size: 17px; /* Un peu plus grand pour le titre */
+    color: #333;
+}
+
+.custom-popup p {
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+.custom-popup .quartier-description {
+    font-size: 13px;
+    line-height: 1.5;
+    margin-top: 10px;
+    /* max-height: 100px; /* Limite la hauteur de la description, ajustez ou enlevez pour voir tout */
+    /* overflow-y: auto; /* Ajouté au .leaflet-popup-content global */
+    border-top: 1px solid #eaeaea;
+    padding-top: 8px;
+    color: #555;
+}
+
+.custom-popup .quartier-description ul {
+    list-style-type: disc;
+    padding-left: 18px; /* Moins d'indentation */
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.custom-popup .quartier-description li {
+    margin-bottom: 5px;
+}
+
+.custom-popup a {
+    color: #007bff;
+    text-decoration: none;
+}
+.custom-popup a:hover {
+    text-decoration: underline;
 }
