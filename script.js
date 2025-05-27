@@ -83,33 +83,60 @@ document.addEventListener('DOMContentLoaded', function () {
     console.log("Carte Leaflet initialisée.");
 
 
-    // --- CHARGEMENT ET AFFICHAGE DES QUARTIERS ---
+   // --- CHARGEMENT ET AFFICHAGE DES QUARTIERS ---
+    console.log("Début du fetch pour quartier_paris.json"); // NOUVEAU LOG
+
     fetch('data/quartier_paris.json')
         .then(response => {
-            if (!response.ok) { throw new Error('Erreur réseau GeoJSON: ' + response.statusText); }
-            return response.json();
+            console.log("Fetch - Première réponse reçue:", response); // NOUVEAU LOG
+            if (!response.ok) {
+                console.error("Fetch - Erreur réseau:", response.status, response.statusText); // NOUVEAU LOG
+                throw new Error('Erreur réseau GeoJSON: ' + response.statusText + ' (' + response.status + ')');
+            }
+            console.log("Fetch - Réponse OK, tentative de response.json()"); // NOUVEAU LOG
+            return response.json(); // Tente de parser la réponse comme JSON
         })
-        .then(rawData => { // rawData est le tableau d'objets original de votre JSON
+        .then(rawData => {
+            console.log("Fetch - Données parsées (rawData):", rawData); // NOUVEAU LOG
+            if (rawData === undefined || rawData === null) { // Vérification plus stricte
+                console.error("Fetch - rawData est undefined ou null après response.json()");
+                throw new TypeError("rawData est invalide après le parsing JSON.");
+            }
+
+            // Transformation des données en FeatureCollection
             var features = rawData.map(function(item) {
-                var feature = item.geom; // item.geom est la Feature GeoJSON
+                if (!item || !item.geom) { // Vérification que item et item.geom existent
+                    console.warn("Item ou item.geom manquant dans rawData:", item);
+                    return null; // Retourner null pour les items invalides
+                }
+                var feature = item.geom;
                 if (!feature.properties) { feature.properties = {}; }
-                // Copier les propriétés de haut niveau de 'item' dans 'feature.properties'
                 feature.properties.l_qu = item.l_qu || "Nom Indisponible";
                 feature.properties.c_ar = parseInt(item.c_ar, 10);
-                feature.properties.c_qu = String(item.c_qu); // Assurer que c_qu est une chaîne pour le tri
-                feature.properties.c_quinsee = item.c_quinsee; // Important pour l'identification unique
+                feature.properties.c_qu = String(item.c_qu);
+                feature.properties.c_quinsee = item.c_quinsee;
                 return feature;
-            });
+            }).filter(feature => feature !== null); // Filtrer les features nulles
 
-            quartiersData = { // Ceci est maintenant notre FeatureCollection
+            if (features.length === 0 && rawData.length > 0) {
+                console.error("Aucune feature valide n'a pu être extraite de rawData, vérifiez la structure item.geom.");
+            }
+
+            quartiersData = {
                 "type": "FeatureCollection",
                 "features": features
             };
-            console.log("Données des quartiers transformées :", quartiersData);
+            console.log("Données des quartiers transformées :", quartiersData); // Ce log est important
+
+            if (!map) { // Vérification que la carte est initialisée
+                console.error("L'objet 'map' n'est pas initialisé avant d'ajouter quartiersLayer.");
+                return;
+            }
 
             quartiersLayer = L.geoJSON(quartiersData, {
                 style: styleQuartier,
                 onEachFeature: function(feature, layer) {
+                    // ... (votre logique onEachFeature)
                     var props = feature.properties;
                     var nomQuartier = props.l_qu || "Nom Indisponible";
                     var arrondissement = props.c_ar || "N/A";
@@ -118,50 +145,32 @@ document.addEventListener('DOMContentLoaded', function () {
                         .replace(/\s+/g, '-')
                         .replace(/[.'()]/g, '')
                         .replace(/[^a-z0-9-]/g, '');
-
                     var imagePath = 'images/' + nomPourLienEtImage + '.jpg';
                     var articlePath = 'articles/' + nomPourLienEtImage + '.html';
                     var descriptionHtml = descriptionsQuartiers[nomPourLienEtImage] || "<p>Informations sur ce quartier à venir.</p>";
-
                     var popupContent = `
                         <div class="custom-popup">
                             <div class="popup-image-container">
-                            <img src="${imagePath}" 
-     alt="Image du quartier ${nomQuartier}" 
-     style="width:100%; height:auto; display:block;" 
-     onerror="this.outerHTML='<p style=\\'text-align:center; color:grey; padding:10px;\\'><i>Image non disponible pour ${nomQuartier}</i></p>';">
+                                <img src="${imagePath}" alt="Image du quartier ${nomQuartier}" style="width:100%; height:auto; display:block;" onerror="this.outerHTML='<p style=\\'text-align:center; color:grey; padding:10px;\\'><i>Image non disponible pour ${nomQuartier}</i></p>';">
                             </div>
                             <div class="popup-text-container">
                                 <h3>${nomQuartier} (${arrondissement}<sup>e</sup> arr.)</h3>
-
                                 <div class="quartier-description">${descriptionHtml}</div>
                                 <p style="margin-top:10px;"><a href="${articlePath}" target="_blank">Lire l'article complet sur ${nomQuartier} →</a></p>
                             </div>
                         </div>`;
                     layer.bindPopup(popupContent, { maxWidth: 350, maxHeight: 400 });
-
-                    layer.on('mouseover', function (e) {
-                        var currentLayer = e.target;
-                        currentLayer.setStyle({ weight: 3, color: '#000', fillOpacity: 0.9 });
-                        if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
-                            currentLayer.bringToFront();
-                        }
-                    });
-                    layer.on('mouseout', function (e) {
-                        e.target.setStyle(styleQuartier(e.target.feature));
-                    });
-                    layer.on('click', function(e) {
-                        map.fitBounds(e.target.getBounds(), {padding: [50, 50]});
-                    });
+                    layer.on('mouseover', function(e){ e.target.setStyle({ weight: 3, color: '#000', fillOpacity: 0.9 }); if(!L.Browser.ie && !L.Browser.opera && !L.Browser.edge){e.target.bringToFront();}});
+                    layer.on('mouseout', function(e){ e.target.setStyle(styleQuartier(e.target.feature)); });
+                    layer.on('click', function(e){ map.fitBounds(e.target.getBounds(), {padding: [50,50]}); });
                 }
             }).addTo(map);
-            console.log("Couche des quartiers ajoutée à la carte.");
-
+            console.log("Couche des quartiers ajoutée à la carte."); // Ce log est important
         })
         .catch(error => {
-            console.error('Erreur finale dans le traitement GeoJSON:', error);
+            console.error('Erreur DÉFINITIVE dans le traitement GeoJSON:', error); // Message d'erreur final
             var mapDiv = document.getElementById('map');
-            if (mapDiv) { // Vérifier que mapDiv existe
+            if (mapDiv) {
                  mapDiv.innerHTML = '<p style="color: red; text-align: center;">Impossible de charger/traiter les données des quartiers. (Détails dans la console)</p>';
             }
         });
