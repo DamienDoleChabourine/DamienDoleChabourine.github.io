@@ -136,9 +136,19 @@ document.addEventListener('DOMContentLoaded', function () {
             quartiersLayer = L.geoJSON(quartiersData, {
                 style: styleQuartier,
                 onEachFeature: function(feature, layer) {
+                     console.log("Contenu de threadDetails au début de onEachFeature:", threadDetails); // Vérifier si l'objet est là
+    var props = feature.properties;
+    var nomQuartier = props.l_qu || "Nom Indisponible";
+    console.log("Clé utilisée pour threadDetails (nomQuartier):", nomQuartier); // Voir la clé exacte
+
+    var descriptionDuThread = threadDetails[nomQuartier] || `<p><i>(Commentaire pour ${nomQuartier} non trouvé dans threadDetails)</i></p>`;
+    console.log("Description récupérée:", descriptionDuThread); // Voir ce qui est récupéré
                     // ... (votre logique onEachFeature)
                     var props = feature.properties;
                     var nomQuartier = props.l_qu || "Nom Indisponible";
+                    // --- AUTRE CONSOLE.LOG UTILE ICI ---
+        console.log(`Traitement du quartier: "${nomQuartier}" (props.l_qu). Recherche dans threadDetails...`);
+        // --- FIN DU CONSOLE.LOG UTILE ---
                     var arrondissement = props.c_ar || "N/A";
                     var nomPourLienEtImage = (nomQuartier).toLowerCase()
                         .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
