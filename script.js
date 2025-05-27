@@ -98,7 +98,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 feature.properties.c_ar = parseInt(item.c_ar, 10);
                 feature.properties.c_qu = String(item.c_qu); // Assurer que c_qu est une chaîne pour le tri
                 feature.properties.c_quinsee = item.c_quinsee; // Important pour l'identification unique
-                // feature.properties.habitants = item.habitants; // Décommentez si vous avez les habitants
                 return feature;
             });
 
@@ -131,7 +130,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             </div>
                             <div class="popup-text-container">
                                 <h3>${nomQuartier} (${arrondissement}<sup>e</sup> arr.)</h3>
-                                <!-- <p><strong>Population :</strong> ${habitants} habitants</p> -->
+
                                 <div class="quartier-description">${descriptionHtml}</div>
                                 <p style="margin-top:10px;"><a href="${articlePath}" target="_blank">Lire l'article complet sur ${nomQuartier} →</a></p>
                             </div>
