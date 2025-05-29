@@ -147,35 +147,28 @@ map = L.map('map', {
                 style: styleQuartier,
                 onEachFeature: function(feature, layer) {
     var props = feature.properties;
-    var nomQuartierOriginal = props.l_qu || "Nom Indisponible"; // Nom tel qu'il est dans le GeoJSON, pour l'affichage
-    var arrondissement = props.c_ar || "N/A";
-    // var habitants = ... (si vous l'avez)
+    var nomQuartierOriginal = props.l_qu || "Nom Indisponible";
 
-    // Créer une clé "slugifiée" normalisée pour les recherches et les chemins de fichiers
-    var clePourLesRecherches = (nomQuartierOriginal).toLowerCase()
-        .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // Enlever les accents
-        .replace(/\s+/g, '-') // Remplacer les espaces par des tirets
-        .replace(/[.'()]/g, '') // Enlever apostrophes, points, parenthèses
-        .replace(/[^a-z0-9-]/g, ''); // Enlever les caractères non alphanumériques (sauf tiret)
+var clePourLesRecherches = (nomQuartierOriginal).toLowerCase()
+    .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // Enlève les accents
+    .replace(/\s+/g, '-') // Remplace les espaces par des tirets
+    .replace(/[.'()]/g, '') // Enlève apostrophes, points, parenthèses
+    .replace(/[^a-z0-9-]/g, ''); // Enlève autres caractères non alphanumériques (sauf tiret)
 
-    console.log(`Quartier original: "${nomQuartierOriginal}", Clé générée pour les recherches: "${clePourLesRecherches}"`);
+console.log(`Quartier original: "${nomQuartierOriginal}", Clé générée pour les recherches: "${clePourLesRecherches}"`);
 
-    var imagePath = 'images/' + clePourLesRecherches + '.jpg'; // Utilise la clé slugifiée
-    var articlePath = 'articles/' + clePourLesRecherches + '.html'; // Utilise la clé slugifiée
-
-    // Récupérer la description depuis l'objet threadDetails en utilisant la clé slugifiée
-    var descriptionDuThread;
-    if (typeof threadDetails !== 'undefined' && threadDetails.hasOwnProperty(clePourLesRecherches)) {
-        descriptionDuThread = threadDetails[clePourLesRecherches];
-        console.log(`Description trouvée dans threadDetails pour la clé "${clePourLesRecherches}".`);
+var descriptionDuThread;
+if (typeof threadDetails !== 'undefined' && threadDetails.hasOwnProperty(clePourLesRecherches)) { // << UTILISEZ clePourLesRecherches ICI
+    descriptionDuThread = threadDetails[clePourLesRecherches];
+    console.log(`Description trouvée dans threadDetails pour la clé "${clePourLesRecherches}".`);
+} else {
+    descriptionDuThread = `<p><i>(Commentaire pour ${nomQuartierOriginal} non trouvé avec la clé "${clePourLesRecherches}")</i></p>`;
+    if (typeof threadDetails !== 'undefined') {
+         console.warn(`Clé "${clePourLesRecherches}" (générée depuis "${nomQuartierOriginal}") non trouvée dans threadDetails. Les 10 premières clés dispo sont:`, Object.keys(threadDetails).slice(0, 10));
     } else {
-        descriptionDuThread = `<p><i>(Commentaire pour ${nomQuartierOriginal} non trouvé avec la clé ${clePourLesRecherches})</i></p>`;
-        if (typeof threadDetails !== 'undefined') {
-             console.warn(`Clé "${clePourLesRecherches}" (générée depuis "${nomQuartierOriginal}") non trouvée dans threadDetails. Les 10 premières clés dispo sont:`, Object.keys(threadDetails).slice(0, 10));
-        } else {
-             console.warn(`threadDetails est undefined lors de la recherche pour la clé "${clePourLesRecherches}".`);
-        }
+         console.warn(`threadDetails est undefined lors de la recherche pour la clé "${clePourLesRecherches}".`);
     }
+}
     
     var popupContent = `
         <div class="custom-popup">
@@ -184,7 +177,6 @@ map = L.map('map', {
             </div>
             <div class="popup-text-container">
                 <h3>${nomQuartierOriginal} (${arrondissement}<sup>e</sup> arr.)</h3>
-                <!-- <p><strong>Population :</strong> ${habitants} habitants</p> -->
                 <div class="quartier-description">
                     ${descriptionDuThread}
                 </div>
