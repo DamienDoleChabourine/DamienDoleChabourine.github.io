@@ -352,51 +352,8 @@ const threadDetails = {
             <li>Restos turques, kurdes ou syriens dingos</li>
             <li>Si t'y habites, vaut mieux avoir du triple vitrage (ou ne revenir qu'à 2 heures du matin)</li>
         </ul>`,
-    "bel-air": `
-        <strong>XXe/ Bel-Air, XIIe :</strong>
-        <ul>
-            <li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li>
-        </ul>`,
-    "saint-lambert": `
-        <strong>XXe/ Saint-Lambert, XVe :</strong>
-        <ul>
-            <li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li>
-        </ul>`,
-    "ternes": `
-        <strong>XXe/ Ternes, XVIIe :</strong>
-        <ul>
-            <li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li>
-        </ul>`,
-    "saint-germain-lauxerrois": `
-        <strong>XXe/ Saint-Germain-l'Auxerrois, Ier :</strong>
-        <ul>
-            <li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li>
-        </ul>`,
-    "ecole-militaire": `
-        <strong>XXe/ Ecole-Militaire, VIIe :</strong>
-        <ul>
-            <li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li>
-        </ul>`,
-    "monnaie": `
-        <strong>XXe/ Monnaie, VIe :</strong>
-        <ul>
-            <li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li>
-        </ul>`,
-    "bonne-nouvelle": `
-        <strong>XXe/ Bonne-Nouvelle, IIe :</strong>
-        <ul>
-            <li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li>
-        </ul>`,
-    "madeleine": `
-        <strong>XXe/ Madeleine, VIIIe :</strong>
-        <ul>
-            <li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li>
-        </ul>`,
-    "saint-ambroise": `
-        <strong>XXe/ Saint-Ambroise, XIe :</strong>
-        <ul>
-            <li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li>
-        </ul>`,
+    
+    
     "sainte-marguerite": `
         <strong>20e/ Sainte-Marguerite, XIe :</strong>
         <ul>
@@ -796,13 +753,20 @@ const threadDetails = {
             <li>Square René Le Gall bien stylé</li>
             <li>On n'y sort pas, on y dort</li>
         </ul>`,
-    "bel-air": ` // Déjà listé, attention. J'utilise le texte de ce classement.
+    "bel-air": ` 
         <strong>67e/ Bel-Air, XIIe :</strong> 
         <ul>
             <li>Quartier chiant</li>
             <li>Partie la plus aménagée et jolie du bois de Vincennes</li>
             <li>Seuls ses habitants sont au courant que la ville de Saint-Mandé existe</li>
         </ul>`,
+         "monnaie": `
+        <strong>51e/ Monnaie, VIe :</strong>
+        <ul>
+            <li>Place Saint-Michel toujours aussi belle</li>
+            <li>Quelques jolies voies et restos également très beaux d'extérieur mais ne jamais y manger (j'ai vu cet aprem un bar/resto avec pinte à 9 euros, genre la pinte la moins chère hein)</li>
+            <li>Trop de bagnoles</li>
+        </ul>`
      // Vous avez listé 79 quartiers. Pour arriver à 80, il en manque un.
      // Vous devrez identifier lequel et l'ajouter ici avec sa clé slugifiée.
 };
