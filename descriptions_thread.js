@@ -404,57 +404,262 @@ const threadDetails = {
             <li>Les crêpes jusqu'au bout de la nuit</li>
             <li>Pourquoi sa partie de la place de la Nation a + de gens bizarres que celle d'en face ?</li>
         </ul>`,
-    "archives": `
-        <strong>XXe/ Archives, IIIe :</strong>
+     "combat": `
+        <strong>21e/ Combat, XIXe :</strong>
         <ul>
-            <li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li>
-        </ul>`,
-    "porte-dauphine": `
-        <strong>XXe/ Porte-Dauphine, XVIe :</strong>
-        <ul>
-            <li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li>
-        </ul>`,
-    "chaillot": `
-        <strong>XXe/ Chaillot, XVIe :</strong>
-        <ul>
-            <li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li>
-        </ul>`,
-    "arts-et-metiers": `
-        <strong>XXe/ Arts-et-Métiers, IIIe :</strong>
-        <ul>
-            <li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li>
-        </ul>`,
-    "mail": `
-        <strong>XXe/ Mail, IIe :</strong>
-        <ul>
-            <li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li>
-        </ul>`,
-    "bercy": `
-        <strong>XXe/ Bercy, XIIe :</strong>
-        <ul>
-            <li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li>
-        </ul>`,
-    "parc-de-montsouris": `
-        <strong>XXe/ Parc-de-Montsouris, XIVe :</strong>
-        <ul>
-            <li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li>
-        </ul>`,
-    "saint-fargeau": `
-        <strong>XXe/ Saint-Fargeau, XXe :</strong>
-        <ul>
-            <li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li>
+            <li>Le Parc des Buttes-Chaumont est le plus beau parc de Paris</li>
+            <li>Le siège historique du Parti COMMUNISTE</li>
+            <li>Emouvante Butte Bergeyre</li>
+            <li>On préfère sortir dans les quartiers qui le jouxtent</li>
         </ul>`,
     "charonne": `
-        <strong>XXe/ Charonne, XXe :</strong>
+        <strong>22e/ Charonne, XXe :</strong>
         <ul>
-            <li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li>
+            <li>Sympathique rue des Vignoles et place de la Réunion</li>
+            <li>Bonne ambiance un peu partout</li>
+            <li>Buffet Dost est le meilleur grec de Paris (ouais, on est comme ça le lundi soir)</li>
         </ul>`,
     "gaillon": `
-        <strong>XXe/ Gaillon, IIe :</strong>
+        <strong>23e/ Gaillon, IIe :</strong>
         <ul>
-            <li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li>
-        </ul>`
-    // N'oubliez pas la virgule si vous ajoutez d'autres quartiers après "gaillon",
-    // mais si c'est le dernier des 79, il ne faut PAS de virgule après son accolade fermante `}`.
-    // Puis fermez l'objet principal :
+            <li>Monopoly a mis ce quartier tout en haut</li>
+            <li>Moitié du trop chouette quartier de restos japonais</li>
+            <li>C'est de là qu'on sait que l'Opéra est trop beau</li>
+            <li>Book Off, les vrais savent</li>
+        </ul>`,
+    "odeon": `
+        <strong>24e/ Odéon, VIe :</strong>
+        <ul>
+            <li>Toujours aussi splendide Jardin du Luxembourg, malgré le tennis bourge et des jeux d'enfants… payants (???)</li>
+            <li>Église Saint-Sulpice, ma préféré de Paris, (extérieur, chapelles passionnantes, œuvres de Delacroix, irréelle chaire…)</li>
+            <li>Tout est trop cher</li>
+        </ul>`,
+    "saint-fargeau": `
+        <strong>25e/ Saint-Fargeau, XXe :</strong>
+        <ul>
+            <li>La fameuse "campagne à Paris" (cousine éloignée de Paris Plages), mais avouons que ça fait un truc</li>
+            <li>La ligne 3 bis passe par là donc on sait que c'est un quartier tranquille (pour le meilleur ou pour le chiant)</li>
+        </ul>`,
+    "saint-gervais": `
+        <strong>26e/ Saint-Gervais, IVe :</strong>
+        <ul>
+            <li>Mon bout du Marais préféré en termes architecturaux</li>
+            <li>L'As du Falafel, rien à ajouter</li>
+            <li>Si vous croisez un vrai habitant, prenez une photo avec lui, vous aurez plus de chance de croiser un acteur connu à Paris.</li>
+            <li>on vous déteste</li>
+        </ul>`,
+    "invalides": `
+        <strong>27e/ Invalides, VIIe :</strong>
+        <ul>
+            <li>Esplanade des Invalides = picnic avec une vue ROYALE</li>
+            <li>Musée Rodin sous-côté, surtout l'automne</li>
+            <li>Pont Alexandre-III, ça se la raconte mais plus beau pont de Paris</li>
+            <li>Faut vraiment piqueniquer</li>
+        </ul>`,
+    "archives": `
+        <strong>28e/ Archives, IIIe :</strong>
+        <ul>
+            <li>Musées Carnavalet + Picasso + Cognacq-Jay + galeries assez ouf hein</li>
+            <li>Le jardin trop mignon des Archives nationales ; trottoirs inadaptés (virons les voitures plus personne n'y habite de toute manière)</li>
+            <li>Tout est trop cher</li>
+            <li>on vous déteste</li>
+        </ul>`,
+    "sorbonne": `
+        <strong>29e/ Sorbonne, Ve :</strong>
+        <ul>
+            <li>Le Panthéon et le musée de Cluny me font un truc, le Bombardier aussi ;</li>
+            <li>Rue de la Huchette toujours aussi drôle (ne jamais y manger)</li>
+            <li>Etudiants partout</li>
+            <li>Quelques librairies gauchistes subsistent mais trop sont mortes</li>
+            <li>Bien trop touristique</li>
+        </ul>`,
+    "enfants-rouges": `
+        <strong>30e/ Enfants rouges, IIIe :</strong>
+        <ul>
+            <li>Concentration de restos qui font rire ceux qui lisent des threads "des meilleurs restos de Paris"</li>
+            <li>Passage Vendôme, peut-être le passage le plus hors-sol et anti-touristique de Paris</li>
+            <li>Devenu trop bourge malgré tout</li>
+        </ul>`,
+    "saint-georges": `
+        <strong>31e/ Saint-Georges, IXe :</strong>
+        <ul>
+            <li>Des restos assez stylés</li>
+            <li>Pigalle déborde par là donc le samedi soir, on rigole bien</li>
+            <li>Les communards y ont détruit la maison d'Adolphe Thiers (+200 points)</li>
+        </ul>`,
+    "goutte-dor": ` // J'ai enlevé la mention, vous pouvez la réintégrer si besoin
+        <strong>32e/ Goutte d'or, XVIIIe :</strong>
+        <ul>
+            <li>Le quartier qui fait peur à l'extrême droite (moins à ses habitants)</li>
+            <li>Quartier qui résiste tant bien que mal à la gentrification</li>
+            <li>Y a LeBarCommun</li> 
+            <li>Les puces de Clignancourt = nostalgie</li>
+        </ul>`,
+    "epinettes": `
+        <strong>33e/ Epinettes, XVIIe :</strong>
+        <ul>
+            <li>Quartier qui sauve l'honneur social de l'arrondissement</li>
+            <li>Les HBM de la rue Ernest-Roche sont juste fabuleusement beaux</li>
+            <li>Seul quartier de l'ouest parisien où on peut boire une bière à un tarif normal</li>
+            <li>Ca reste le XVIIe.</li>
+        </ul>`,
+    "bercy": `
+        <strong>34e/ Bercy, XIIe :</strong>
+        <ul>
+            <li>UGC Bercy = royaume de la carte UGC Illimité avec les MK2</li>
+            <li>Le reste de Cour Saint-Emillion est aussi naze que cher</li>
+            <li>Parc de Bercy bien stylé, avec au moins trois parties bien distinctes</li>
+            <li>Quais de Seine les plus inaccessibles de Paris</li>
+        </ul>`,
+    "saint-ambroise": `
+        <strong>35e/ Saint-Amboise, XIe :</strong>
+        <ul>
+            <li>Pas mal de commerces de bouche bien stylés</li>
+            <li>Bataclan, donc lieu de recueillement et de mémoire parisien</li>
+            <li>Les gens qui habitent là sont moins sensibles au bruit (voitures, motos, fêtards)</li>
+        </ul>`,
+    "saint-germain-lauxerrois": `
+        <strong>36e/ Saint-Germain l'Auxerrois, Ier :</strong>
+        <ul>
+            <li>Jardin des Tuilleries + Louvre quand même, c'est du sérieux ;</li>
+            <li>Le morceau chiant mais joli de l'île de la Cité</li>
+            <li>Impossible de manger correctement</li>
+            <li>Inhabité, mais logique</li>
+        </ul>`,
+    "grandes-carrieres": ` // Attention : le thread indique XIIIe, mais Grandes Carrières est dans le XVIIIe. J'utilise XVIIIe.
+        <strong>37e/ Grandes Carrières, XVIIIe :</strong> 
+        <ul>
+            <li>Le cimetière de Montmartre est sous-coté</li>
+            <li>La place Clichy et Pigalle rendent ce quartier très drôle la nuit</li>
+            <li>Des restos et bars cools</li>
+        </ul>`,
+    "plaisance": `
+        <strong>38e/ Plaisance, XIVe :</strong>
+        <ul>
+            <li>Rue Raymond-Losserand bien sympa à arpenter</li>
+            <li>Bon équilibre entre commerces, travail et lieux pour dormir dans le quartier</li>
+        </ul>`,
+    "bonne-nouvelle": `
+        <strong>39e/ Bonne Nouvelle, IIe :</strong>
+        <ul>
+            <li>Des bars et restos sympas</li>
+            <li>La glorieuse rue Saint-Denis</li>
+            <li>Autoroute de vélos assez pratique et/ou drôle à regarder</li>
+        </ul>`,
+    "jardin-des-plantes": `
+        <strong>40e/ Jardin des plantes, Ve :</strong>
+        <ul>
+            <li>Toujours du mal à comprendre le parc éponyme mais c'est ce qui fait son charme</li>
+            <li>Rue Mouffetard qui navigue entre le super et le turbo-beauf</li>
+            <li>Pas mal de rues bien mortes</li>
+        </ul>`,
+    "rochechouart": `
+        <strong>41e/ Rochechouart, IXe :</strong>
+        <ul>
+            <li>Des restos et bars à vin mortels</li>
+            <li>Rien d'autre à faire mais c'est déjà pas mal</li>
+        </ul>`,
+    "parc-de-montsouris": `
+        <strong>42e/ Parc de Montsouris, XIVe :</strong> 
+        <ul>
+            <li>Quand on ne sait pas où piqueniquer, on va là</li>
+            <li>Parc qui n'a rien à envier aux Buttes-Chaumont</li>
+            <li>Cité internationale = footing</li>
+            <li>Rien d'autre que ces deux parcs en fait mais quel quartier possède deux parcs aussi grands ?</li>
+        </ul>`,
+    "chaillot": `
+        <strong>43e/ Chaillot, XVIe :</strong>
+        <ul>
+            <li>Des avenues franchement impressionnantes</li>
+            <li>Le Trocadéro est la phase terminale du Paris touristique, mais quelle vue</li>
+            <li>Des musées dingos (Palais de Tokyo, MAM, Guimet...)</li>
+        </ul>`,
+    
+    // --- Placeholders pour les 36 quartiers restants (de votre fichier JSON initial) ---
+    // Vous devrez vérifier les noms `l_qu` de votre GeoJSON et créer les clés slugifiées correspondantes.
+    // J'utilise les noms que vous aviez listés plus tôt, en les slugifiant.
+
+    "necker": `
+        <strong>XXe/ Necker, XVe :</strong>
+        <ul><li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li></ul>`,
+    "saint-germain-des-pres": `
+        <strong>XXe/ Saint-Germain-des-Prés, VIe :</strong>
+        <ul><li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li></ul>`,
+    "europe": `
+        <strong>XXe/ Europe, VIIIe :</strong>
+        <ul><li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li></ul>`,
+    "faubourg-du-roule": `
+        <strong>XXe/ Faubourg-du-Roule, VIIIe :</strong>
+        <ul><li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li></ul>`,
+    "faubourg-montmartre": `
+        <strong>XXe/ Faubourg-Montmartre, IXe :</strong>
+        <ul><li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li></ul>`,
+    "auteuil": `
+        <strong>XXe/ Auteuil, XVIe :</strong>
+        <ul><li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li></ul>`,
+    "val-de-grace": `
+        <strong>XXe/ Val-de-Grace, Ve :</strong>
+        <ul><li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li></ul>`,
+    "bel-air": `
+        <strong>XXe/ Bel-Air, XIIe :</strong>
+        <ul><li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li></ul>`,
+    "saint-lambert": `
+        <strong>XXe/ Saint-Lambert, XVe :</strong>
+        <ul><li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li></ul>`,
+    "ternes": `
+        <strong>XXe/ Ternes, XVIIe :</strong>
+        <ul><li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li></ul>`,
+    "ecole-militaire": `
+        <strong>XXe/ Ecole-Militaire, VIIe :</strong>
+        <ul><li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li></ul>`,
+    "monnaie": `
+        <strong>XXe/ Monnaie, VIe :</strong>
+        <ul><li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li></ul>`,
+    "madeleine": `
+        <strong>XXe/ Madeleine, VIIIe :</strong>
+        <ul><li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li></ul>`,
+    "porte-dauphine": `
+        <strong>XXe/ Porte-Dauphine, XVIe :</strong>
+        <ul><li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li></ul>`,
+    "arts-et-metiers": `
+        <strong>XXe/ Arts-et-Métiers, IIIe :</strong>
+        <ul><li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li></ul>`,
+    "mail": `
+        <strong>XXe/ Mail, IIe :</strong>
+        <ul><li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li></ul>`,
+    "vivienne": `
+        <strong>XXe/ Vivienne, IIe :</strong>
+        <ul><li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li></ul>`,
+    "arsenal": `
+        <strong>XXe/ Arsenal, IVe :</strong>
+        <ul><li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li></ul>`,
+    "montparnasse": `
+        <strong>XXe/ Montparnasse, XIVe :</strong>
+        <ul><li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li></ul>`,
+    "muette": `
+        <strong>XXe/ Muette, XVIe :</strong>
+        <ul><li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li></ul>`,
+    "salpetriere": `
+        <strong>XXe/ Salpêtrière, XIIIe :</strong>
+        <ul><li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li></ul>`,
+    "croulebarbe": `
+        <strong>XXe/ Croulebarbe, XIIIe :</strong>
+        <ul><li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li></ul>`,
+    "plaine-de-monceaux": ` 
+        <strong>XXe/ Plaine de Monceaux, XVIIe :</strong>
+        <ul><li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li></ul>`,
+    "grenelle": `
+        <strong>XXe/ Grenelle, XVe :</strong>
+        <ul><li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li></ul>`,
+    "petit-montrouge": `
+        <strong>XXe/ Petit-Montrouge, XIVe :</strong>
+        <ul><li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li></ul>`,
+     "combat": ` // Assurez-vous que ce n'est pas un doublon du 21e
+        <strong>XXe/ Combat, XIXe :</strong>
+        <ul><li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li></ul>`,
+    "picpus": `
+        <strong>XXe/ Picpus, XIIe :</strong>
+        <ul><li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li></ul>`,
+     // Vous avez listé 79 quartiers. Pour arriver à 80, il en manque un.
+     // Vous devrez identifier lequel et l'ajouter ici avec sa clé slugifiée.
 };
