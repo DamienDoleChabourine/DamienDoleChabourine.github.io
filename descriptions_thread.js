@@ -707,65 +707,102 @@ const threadDetails = {
             <li>D'ailleurs, ceux qui restent bloqués sur les voies du carrefour et bloquent des trams bondés à porte d'Orléans = nazis</li>
         </ul>`,
 
-    // ----- Placeholders pour les quartiers restants de votre GeoJSON (ceux qui ne sont pas dans le top 62 du thread) -----
-    // Vous devrez vérifier les noms `l_qu` de votre GeoJSON et créer les clés slugifiées correspondantes.
-    // J'utilise les noms que vous aviez listés plus tôt, en les slugifiant.
-    // Si certains sont déjà couverts ci-dessus, vous pouvez les supprimer d'ici.
-
-    "saint-thomas-daquin": `
-        <strong>XXe/ Saint-Thomas-d'Aquin, VIIe :</strong>
-        <ul><li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li></ul>`,
-    "grandes-carrieres": ` 
-        <strong>XXe/ Grandes-Carrières, XVIIIe :</strong> 
-        <ul><li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li></ul>`,
-    "necker": `
-        <strong>XXe/ Necker, XVe :</strong>
-        <ul><li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li></ul>`,
-    "javel": `
-        <strong>XXe/ Javel, XVe :</strong>
-        <ul><li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li></ul>`,
-    "faubourg-du-roule": `
-        <strong>XXe/ Faubourg-du-Roule, VIIIe :</strong>
-        <ul><li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li></ul>`,
-    "saint-georges": ` // Déjà traité au 31e, attention aux doublons si le nom l_qu est différent
-        <strong>XXe/ Saint-Georges, IXe :</strong>
-        <ul><li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li></ul>`,
-    "faubourg-montmartre": `
-        <strong>XXe/ Faubourg-Montmartre, IXe :</strong>
-        <ul><li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li></ul>`,
-    "auteuil": `
-        <strong>XXe/ Auteuil, XVIe :</strong>
-        <ul><li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li></ul>`,
-    "val-de-grace": `
-        <strong>XXe/ Val-de-Grace, Ve :</strong>
-        <ul><li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li></ul>`,
-    "bel-air": `
-        <strong>XXe/ Bel-Air, XIIe :</strong>
-        <ul><li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li></ul>`,
-    "saint-lambert": `
-        <strong>XXe/ Saint-Lambert, XVe :</strong>
-        <ul><li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li></ul>`,
     "ternes": `
-        <strong>XXe/ Ternes, XVIIe :</strong>
-        <ul><li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li></ul>`,
+        <strong>80e/ Ternes, XVIIe arrondissement :</strong>
+        <ul>
+            <li>Quartier qui porte très bien son nom</li>
+            <li>Turbo-bourgeois pour rien</li>
+            <li>Même pas un morceau de bois contrairement à ses cousins bourgeois du XVIe</li>
+        </ul>`,
+    "javel": ` // Déjà listé, attention. J'utilise le texte de ce classement.
+        <strong>79e/ Javel, XVe :</strong> 
+        <ul>
+            <li>L'un des quartiers les plus chiants de Paris</li>
+            <li>Des banlieusards aisés qui s'y sont installés disent "Au moins, ici, j'ai mes repères"</li>
+            <li>Le quartier est à peine sauvé par le parc André-Citroën</li>
+            <li>Trop de journalistes</li>
+        </ul>`,
+    "auteuil": ` // Déjà listé, attention. J'utilise le texte de ce classement.
+        <strong>78e/ Auteuil, XVIe :</strong> 
+        <ul>
+            <li>La partie la plus chiante du XVIe arrondissement (ça fixe le truc)</li>
+            <li>Animation une fois toutes les deux semaines (match au Parc des Princes)</li>
+            <li>Quartier moins beau que le reste du très bourgeois mais pourtant très joli XVIe.</li>
+        </ul>`,
     "ecole-militaire": `
-        <strong>XXe/ Ecole-Militaire, VIIe :</strong>
-        <ul><li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li></ul>`,
-    "monnaie": `
-        <strong>XXe/ Monnaie, VIe :</strong>
-        <ul><li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li></ul>`,
-    "madeleine": `
-        <strong>XXe/ Madeleine, VIIIe :</strong>
-        <ul><li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li></ul>`,
-    "chaillot": ` // Déjà traité au 43e
-        <strong>XXe/ Chaillot, XVIe :</strong>
-        <ul><li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li></ul>`,
+        <strong>77e/ Ecole militaire : VIIe :</strong> 
+        <ul>
+            <li>Personne n'habite là, soyons clairs</li>
+            <li>Quartier qu'on traverse quand on emmène un cousin ou une tante à la tour Eiffel</li>
+            <li>Quartier tellement cher qu'il sera immédiatement réquisitionné à la Révolution</li>
+        </ul>`,
+    "faubourg-du-roule": ` // Déjà listé, attention. J'utilise le texte de ce classement.
+        <strong>76e/ Faubourg du Roule, VIIIe :</strong> 
+        <ul>
+            <li>On cherche toujours un truc à y faire</li>
+            <li>La quasi-totalité des bars, restos et boîtes sont des lieux de beaufs</li>
+        </ul>`,
+    "plaine-de-monceaux": `
+        <strong>75e/ Plaine-de-Montceaux, XVIIe :</strong> 
+        <ul>
+            <li>Quartier chiant sauvé par quelques beaux bâtiments</li>
+            <li>Pas grand-chose à en dire (c'est bien ça le problème)</li>
+        </ul>`,
+    "faubourg-montmartre": ` // Déjà listé, attention. J'utilise le texte de ce classement.
+        <strong>74e/ Faubourg Montmartre, IXe :</strong> 
+        <ul>
+            <li>Musée Grévin = pire musée de Paris avec celui de la chaussette (s'il existait)</li>
+            <li>Au moins 8 théâtres, non ?</li>
+            <li>Pas grand-chose à y faire par rapport à ses voisins</li>
+        </ul>`,
+    "val-de-grace": ` // Déjà listé, attention. J'utilise le texte de ce classement.
+        <strong>73e/ Val de Grâce, Ve :</strong> 
+        <ul>
+            <li>Rien à voir et rien à faire hormis une librairie ROUGE et une librairie lusophone, toutes deux géniales</li>
+            <li>On y passe à pied quand on flâne, mais juste pour aller ailleurs</li>
+        </ul>`,
+    "salpetriere": ` // Déjà listé, attention. J'utilise le texte de ce classement.
+        <strong>72e/ Salpêtrière, XIIIe :</strong> 
+        <ul>
+            <li>Un hôpital et une gare font littéralement la moitié du quartier</li>
+            <li>Jolie mairie du XIIIe et la place d'Italie est bien mieux qu'avant</li>
+            <li>Très hideuse Cité de la mode</li>
+        </ul>`,
+    "necker": ` // Déjà listé, attention. J'utilise le texte de ce classement (XIe est une erreur dans votre thread, Necker est XVe)
+        <strong>71e/ Necker, XVe :</strong> 
+        <ul>
+            <li>J'aime les tours mais celle de Montparnasse est vraiment moche</li>
+            <li>Quelques boîtes et restos beaufs</li>
+            <li>Vide et mort dès qu'on s'éloigne de la gare</li>
+        </ul>`,
     "mail": `
-        <strong>XXe/ Mail, IIe :</strong>
-        <ul><li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li></ul>`,
-    "parc-de-montsouris": ` // Déjà traité au 42e
-        <strong>XXe/ Parc-de-Montsouris, XIVe :</strong>
-        <ul><li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li></ul>`
+        <strong>70e/ Mail, IIe :</strong>
+        <ul>
+            <li>Quelques pubs trop chers</li>
+            <li>Le quartier du Sentier est moins drôle qu'avant</li>
+            <li>Le Grand Rex n'amuse que ceux qui viennent à Paris moins d'une fois par an ou qui ont moins de 17 ans</li>
+            <li>Petit pour rien, faut l'éclater et le faire fusionner</li>
+        </ul>`,
+    "madeleine": `
+        <strong>69e/ Madeleine, VIIIe :</strong>
+        <ul>
+            <li>L'Elysée et Beauvau, ça fout une sale ambiance</li>
+            <li>On se fend quand même bien la poire en regardant le prix des vêtements</li>
+            <li>Place de la Madeleine, pire place de Paris</li>
+        </ul>`,
+    "croulebarbe": `
+        <strong>68e/ Croulebarbe, XIIIe :</strong> 
+        <ul>
+            <li>Square René Le Gall bien stylé</li>
+            <li>On n'y sort pas, on y dort</li>
+        </ul>`,
+    "bel-air": ` // Déjà listé, attention. J'utilise le texte de ce classement.
+        <strong>67e/ Bel-Air, XIIe :</strong> 
+        <ul>
+            <li>Quartier chiant</li>
+            <li>Partie la plus aménagée et jolie du bois de Vincennes</li>
+            <li>Seuls ses habitants sont au courant que la ville de Saint-Mandé existe</li>
+        </ul>`,
      // Vous avez listé 79 quartiers. Pour arriver à 80, il en manque un.
      // Vous devrez identifier lequel et l'ajouter ici avec sa clé slugifiée.
 };
