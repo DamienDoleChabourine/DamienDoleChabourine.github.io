@@ -190,7 +190,7 @@ if (typeof threadDetails !== 'undefined' && threadDetails.hasOwnProperty(clePour
     `;
 
     layer.bindPopup(popupContent, {
-        maxWidth: 550,
+        maxWidth: 280,
         maxHeight: 350,
         className: 'custom-leaflet-popup'
     });

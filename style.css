@@ -5,8 +5,6 @@
     overflow-y: auto; /* Ajoute une barre de défilement si le contenu dépasse */
 }
 
-/* Si vous voulez une disposition où l'image est au-dessus du texte (plus simple) */
-/*
 .popup-image-container img {
     width: 100%;
     height: auto;
@@ -16,7 +14,6 @@
 .popup-text-container {
     padding: 5px;
 }
-*/
 
 /* Pour une disposition 4/5e image et 1/5e texte côte à côte (plus complexe) */
 /* Il est plus facile de mettre l'image au-dessus et le texte en dessous pour les popups Leaflet */
