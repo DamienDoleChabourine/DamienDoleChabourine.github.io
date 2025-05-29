@@ -29,13 +29,13 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         const num = parseInt(color, 16);
         let r = (num >> 16) + amount;
-        if (r > 255) r = 255; // CORRIGÉ
+        if (r > 255) r = 255; 
         else if (r < 0) r = 0;
         let b = ((num >> 8) & 0x00FF) + amount;
-        if (b > 255) b = 255; // CORRIGÉ
+        if (b > 255) b = 255; 
         else if (b < 0) b = 0;
         let g = (num & 0x0000FF) + amount;
-        if (g > 255) g = 255; // CORRIGÉ
+        if (g > 255) g = 255; 
         else if (g < 0) g = 0;
         return (usePound ? "#" : "") + String("000000" + (g | (b << 8) | (r << 16)).toString(16)).slice(-6);
     }
@@ -75,7 +75,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     // --- INITIALISATION DE LA CARTE ---
-    map = L.map('map').setView([48.8566, 2.3522], 12);
+    var southWest = L.latLng(48.70, 2.10); // Point Sud-Ouest (un peu plus large que Paris strict)
+var northEast = L.latLng(49.00, 2.65); // Point Nord-Est
+var parisBounds = L.latLngBounds(southWest, northEast);
+
+map = L.map('map', {
+    // Options de la carte
+    maxBounds: parisBounds,         // Limite le défilement à ces bornes
+    maxBoundsViscosity: 0.9,        // Rend difficile de sortir des bornes (0.0 à 1.0)
+    minZoom: 10,                    // Niveau de zoom minimum (Paris sera encore visible)
+    // maxZoom: 18                   // Vous l'avez peut-être déjà sur le tileLayer, mais ici c'est pour la carte
+}).setView([48.8566, 2.3522], 12);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '© <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
@@ -136,44 +146,73 @@ document.addEventListener('DOMContentLoaded', function () {
             quartiersLayer = L.geoJSON(quartiersData, {
                 style: styleQuartier,
                 onEachFeature: function(feature, layer) {
-                     console.log("Contenu de threadDetails au début de onEachFeature:", threadDetails); // Vérifier si l'objet est là
     var props = feature.properties;
-    var nomQuartier = props.l_qu || "Nom Indisponible";
-    console.log("Clé utilisée pour threadDetails (nomQuartier):", nomQuartier); // Voir la clé exacte
+    var nomQuartierOriginal = props.l_qu || "Nom Indisponible"; // Nom tel qu'il est dans le GeoJSON, pour l'affichage
+    var arrondissement = props.c_ar || "N/A";
+    // var habitants = ... (si vous l'avez)
 
-    var descriptionDuThread = threadDetails[nomQuartier] || `<p><i>(Commentaire pour ${nomQuartier} non trouvé dans threadDetails)</i></p>`;
-    console.log("Description récupérée:", descriptionDuThread); // Voir ce qui est récupéré
-                    // ... (votre logique onEachFeature)
-                    var props = feature.properties;
-                    var nomQuartier = props.l_qu || "Nom Indisponible";
-                    // --- AUTRE CONSOLE.LOG UTILE ICI ---
-        console.log(`Traitement du quartier: "${nomQuartier}" (props.l_qu). Recherche dans threadDetails...`);
-        // --- FIN DU CONSOLE.LOG UTILE ---
-                    var arrondissement = props.c_ar || "N/A";
-                    var nomPourLienEtImage = (nomQuartier).toLowerCase()
-                        .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-                        .replace(/\s+/g, '-')
-                        .replace(/[.'()]/g, '')
-                        .replace(/[^a-z0-9-]/g, '');
-                    var imagePath = 'images/' + nomPourLienEtImage + '.jpg';
-                    var articlePath = 'articles/' + nomPourLienEtImage + '.html';
-                    var descriptionHtml = descriptionsQuartiers[nomPourLienEtImage] || "<p>Informations sur ce quartier à venir.</p>";
-                    var popupContent = `
-                        <div class="custom-popup">
-                            <div class="popup-image-container">
-                                <img src="${imagePath}" alt="Image du quartier ${nomQuartier}" style="width:100%; height:auto; display:block;" onerror="this.outerHTML='<p style=\\'text-align:center; color:grey; padding:10px;\\'><i>Image non disponible pour ${nomQuartier}</i></p>';">
-                            </div>
-                            <div class="popup-text-container">
-                                <h3>${nomQuartier} (${arrondissement}<sup>e</sup> arr.)</h3>
-                                <div class="quartier-description">${descriptionHtml}</div>
-                                <p style="margin-top:10px;"><a href="${articlePath}" target="_blank">Lire l'article complet sur ${nomQuartier} →</a></p>
-                            </div>
-                        </div>`;
-                    layer.bindPopup(popupContent, { maxWidth: 350, maxHeight: 400 });
-                    layer.on('mouseover', function(e){ e.target.setStyle({ weight: 3, color: '#000', fillOpacity: 0.9 }); if(!L.Browser.ie && !L.Browser.opera && !L.Browser.edge){e.target.bringToFront();}});
-                    layer.on('mouseout', function(e){ e.target.setStyle(styleQuartier(e.target.feature)); });
-                    layer.on('click', function(e){ map.fitBounds(e.target.getBounds(), {padding: [50,50]}); });
-                }
+    // Créer une clé "slugifiée" normalisée pour les recherches et les chemins de fichiers
+    var clePourLesRecherches = (nomQuartierOriginal).toLowerCase()
+        .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // Enlever les accents
+        .replace(/\s+/g, '-') // Remplacer les espaces par des tirets
+        .replace(/[.'()]/g, '') // Enlever apostrophes, points, parenthèses
+        .replace(/[^a-z0-9-]/g, ''); // Enlever les caractères non alphanumériques (sauf tiret)
+
+    console.log(`Quartier original: "${nomQuartierOriginal}", Clé générée pour les recherches: "${clePourLesRecherches}"`);
+
+    var imagePath = 'images/' + clePourLesRecherches + '.jpg'; // Utilise la clé slugifiée
+    var articlePath = 'articles/' + clePourLesRecherches + '.html'; // Utilise la clé slugifiée
+
+    // Récupérer la description depuis l'objet threadDetails en utilisant la clé slugifiée
+    var descriptionDuThread;
+    if (typeof threadDetails !== 'undefined' && threadDetails.hasOwnProperty(clePourLesRecherches)) {
+        descriptionDuThread = threadDetails[clePourLesRecherches];
+        console.log(`Description trouvée dans threadDetails pour la clé "${clePourLesRecherches}".`);
+    } else {
+        descriptionDuThread = `<p><i>(Commentaire pour ${nomQuartierOriginal} non trouvé avec la clé ${clePourLesRecherches})</i></p>`;
+        if (typeof threadDetails !== 'undefined') {
+             console.warn(`Clé "${clePourLesRecherches}" (générée depuis "${nomQuartierOriginal}") non trouvée dans threadDetails. Les 10 premières clés dispo sont:`, Object.keys(threadDetails).slice(0, 10));
+        } else {
+             console.warn(`threadDetails est undefined lors de la recherche pour la clé "${clePourLesRecherches}".`);
+        }
+    }
+    
+    var popupContent = `
+        <div class="custom-popup">
+            <div class="popup-image-container">
+                <img src="${imagePath}" alt="Image du quartier ${nomQuartierOriginal}" style="width:100%; height:auto; display:block;" onerror="this.outerHTML='<p style=\\'text-align:center; color:grey; padding:10px;\\'><i>Image non disponible pour ${nomQuartierOriginal}</i></p>';">
+            </div>
+            <div class="popup-text-container">
+                <h3>${nomQuartierOriginal} (${arrondissement}<sup>e</sup> arr.)</h3>
+                <!-- <p><strong>Population :</strong> ${habitants} habitants</p> -->
+                <div class="quartier-description">
+                    ${descriptionDuThread}
+                </div>
+                <p style="margin-top:10px;"><a href="${articlePath}" target="_blank">Lire l'article complet sur ${nomQuartierOriginal} →</a></p>
+            </div>
+        </div>
+    `;
+
+    layer.bindPopup(popupContent, {
+        maxWidth: 380,
+        maxHeight: 350,
+        className: 'custom-leaflet-popup'
+    });
+
+    layer.on('mouseover', function (e) {
+        var currentLayer = e.target;
+        currentLayer.setStyle({ weight: 3, color: '#000', fillOpacity: 0.9 });
+        if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+            currentLayer.bringToFront();
+        }
+    });
+    layer.on('mouseout', function (e) {
+        e.target.setStyle(styleQuartier(e.target.feature));
+    });
+    layer.on('click', function(e) {
+        map.fitBounds(e.target.getBounds(), {padding: [50, 50]});
+    });
+}
             }).addTo(map);
             console.log("Couche des quartiers ajoutée à la carte."); // Ce log est important
         })
