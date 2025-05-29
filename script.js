@@ -159,6 +159,7 @@ console.log(`Quartier original: "${nomQuartierOriginal}", Clé générée pour l
 
 var imagePath = 'images/' + clePourLesRecherches + '.jpg';
 var articlePath = 'articles/' + clePourLesRecherches + '.html';
+var arrondissement = props.c_ar || "N/A";
 
 var descriptionDuThread;
 if (typeof threadDetails !== 'undefined' && threadDetails.hasOwnProperty(clePourLesRecherches)) { // << UTILISEZ clePourLesRecherches ICI
