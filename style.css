@@ -1,20 +1,22 @@
 /* Style pour le conteneur principal du popup personnalisé */
 .custom-popup {
     width: 500px; /* ou la largeur que vous souhaitez pour le popup total */
-    max-height: 400px; /* Optionnel: pour éviter des popups trop hauts */
-    overflow-y: auto; /* Ajoute une barre de défilement si le contenu dépasse */
+    /* max-height: 400px; */ /* Optionnel: pour éviter des popups trop hauts, contrôlé par .leaflet-popup-content maintenant */
+    /* overflow-y: auto; */ /* Géré par .leaflet-popup-content */
 }
 
-.popup-image-container img {
+/* Ces styles sont OK, mais certains sont redéfinis plus bas pour .custom-popup */
+.popup-image-container img { /* Ce sélecteur est moins spécifique que .custom-popup .popup-image-container img */
     width: 100%;
     height: auto;
     display: block;
     margin-bottom: 10px; 
 }
-.popup-text-container {
+.popup-text-container { /* Ce sélecteur est moins spécifique que .custom-popup .popup-text-container */
     padding: 5px;
 }
 
+/* Les commentaires multilignes en CSS commencent par /* et se terminent par */
 /* Pour une disposition 4/5e image et 1/5e texte côte à côte (plus complexe) */
 /* Il est plus facile de mettre l'image au-dessus et le texte en dessous pour les popups Leaflet */
 /* Si vous voulez vraiment côte à côte, il faudra jouer avec des largeurs fixes ou % et
@@ -23,17 +25,21 @@
    sans JS supplémentaire pour calculer les hauteurs. */
 
 /* Une approche plus simple pour une image grande et un texte en dessous : */
+/* Note: Vous redéfinissez .custom-popup et ses enfants ici, ce qui est bien. */
 .custom-popup .popup-image-container {
-    /* L'image prendra la largeur du popup, la hauteur s'adaptera */
-    margin-bottom: 10px; /* Espace avant le texte */
+    margin-bottom: 10px; 
 }
 
 .custom-popup .popup-image-container img {
-    border-radius: 4px; /* Coins arrondis pour l'image */
+    border-radius: 4px;
+    max-height: 150px; 
+    object-fit: cover; 
+    width: 100%; /* Ajouté pour s'assurer qu'elle prend la largeur de son conteneur */
+    display: block; /* Pour éviter les espaces en dessous parfois */
 }
 
 .custom-popup .popup-text-container {
-    padding: 0 5px 5px 5px; /* Un peu de padding pour le texte */
+    padding: 0 5px 5px 5px; 
     font-size: 14px;
     line-height: 1.4;
 }
@@ -41,78 +47,59 @@
 .custom-popup h3 {
     margin-top: 0;
     margin-bottom: 8px;
-    font-size: 16px;
+    font-size: 17px; 
+    color: #333;
 }
 
 .custom-popup p {
-    margin-bottom: 5px;
+    margin-bottom: 8px; /* J'ai gardé 8px, vous aviez 5px plus haut */
+    line-height: 1.4;
 }
 
 /* Style général du corps du popup Leaflet */
 .leaflet-popup-content-wrapper {
-    /* background: #f8f8f8; /* Un fond légèrement différent si vous voulez */
+    /* background: #f8f8f8; */
     /* border-radius: 8px; */
     /* box-shadow: 0 2px 10px rgba(0,0,0,0.2); */
 }
 
 .leaflet-popup-content {
-    margin: 13px 19px; /* Un peu plus d'espace intérieur */
-    width: auto !important; /* Pour que maxWidth fonctionne bien */
-    max-height: 330px; /* Hauteur max avant scroll, ajustez selon vos besoins */
-    overflow-y: auto;  /* Barre de défilement si le contenu dépasse */
-    font-size: 14px;   /* Taille de police de base pour le popup */
+    margin: 13px 19px; 
+    width: auto !important; 
+    max-height: 330px;  /* C'est la hauteur max pour le contenu AVANT scroll */
+    overflow-y: auto;  
+    font-size: 14px;   
 }
 
-/* Classe spécifique pour nos popups si on veut plus de contrôle que .leaflet-popup-content */
 .custom-leaflet-popup .leaflet-popup-content {
-    /* Vous pouvez ajouter des styles spécifiques ici si besoin */
+    /* Styles spécifiques si besoin */
 }
 
-
-.custom-popup { /* Conteneur principal de notre contenu HTML dans le popup */
-    /* width: 350px; /* La largeur sera contrôlée par maxWidth de bindPopup */
-}
-
-.custom-popup .popup-image-container {
-    margin-bottom: 10px;
-}
-
-.custom-popup .popup-image-container img {
-    border-radius: 4px;
-    max-height: 150px; /* Limiter la hauteur de l'image pour ne pas écraser le texte */
-    object-fit: cover; /* S'assure que l'image couvre bien son conteneur sans se déformer */
-}
-
-.custom-popup .popup-text-container {
-    padding: 0 5px 5px 5px;
-}
-
-.custom-popup h3 {
-    margin-top: 0;
-    margin-bottom: 8px;
-    font-size: 17px; /* Un peu plus grand pour le titre */
-    color: #333;
-}
-
-.custom-popup p {
-    margin-bottom: 8px;
-    line-height: 1.4;
-}
+/* Vous avez une autre définition pour .custom-popup ici, ce qui est redondant.
+   On peut fusionner ou supprimer.
+.custom-popup { 
+    /* width: 350px; */
+/*}
+*/
+/* Les styles pour .custom-popup .popup-image-container et ses enfants sont déjà définis plus haut.
+   Si ce sont des ajustements, c'est OK, sinon c'est redondant.
+*/
 
 .custom-popup .quartier-description {
     font-size: 13px;
     line-height: 1.5;
     margin-top: 10px;
-    /* max-height: 100px; /* Limite la hauteur de la description, ajustez ou enlevez pour voir tout */
-    /* overflow-y: auto; /* Ajouté au .leaflet-popup-content global */
     border-top: 1px solid #eaeaea;
     padding-top: 8px;
     color: #555;
+    /* Le scroll est géré par .leaflet-popup-content, donc pas besoin ici en général */
+    /* max-height: none; */ /* Si vous voulez que la description prenne toute la place nécessaire */
+    /* overflow-y: visible; */
 }
 
 .custom-popup .quartier-description ul {
     list-style-type: disc;
-    padding-left: 18px; /* Moins d'indentation */
+    padding-left: 18px; 
     margin-top: 5px;
     margin-bottom: 5px;
 }
@@ -128,15 +115,29 @@
 .custom-popup a:hover {
     text-decoration: underline;
 }
+
+/* Styles pour la page et la carte */
 html, body {
     height: 100%;
     margin: 0;
     padding: 0;
-    overflow: hidden; /* Pour éviter les barres de défilement si la carte prend toute la place */
+    /* overflow: hidden; */ /* Commentez ceci pour l'instant, cela peut cacher les scrollbars de la page entière */
+    font-family: sans-serif; /* Ajout d'une police par défaut pour la page */
 }
 
 #map {
     width: 100%;
     height: 80vh; /* La carte prendra 80% de la hauteur de la fenêtre d'affichage */
-    /* Essayez différentes valeurs : 70vh, 90vh, ou même 100vh si vous voulez qu'elle remplisse tout */
+    border: 1px solid #ccc; /* Pour voir les limites de la carte */
+}
+
+/* Styles pour les éléments au-dessus de la carte */
+header.page-header { /* Donnons une classe à un potentiel conteneur pour le titre/texte */
+    padding: 15px 20px;
+    background-color: #f0f0f0; /* Juste pour le distinguer */
+    border-bottom: 1px solid #ddd;
+}
+
+header.page-header h1 {
+    margin-top: 0;
 }
