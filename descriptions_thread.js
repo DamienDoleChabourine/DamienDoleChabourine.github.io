@@ -235,7 +235,7 @@ const threadDetails = {
         <ul>
             <li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li>
         </ul>`,
-    "plaine-de-monceaux": ` // Attention au "œ" qui devient "oe"
+    "plaine-de-monceaux": `
         <strong>XXe/ Plaine de Monceaux, XVIIe :</strong>
         <ul>
             <li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li>
@@ -260,7 +260,7 @@ const threadDetails = {
         <ul>
             <li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li>
         </ul>`,
-    "maison-blanche": ` // Déjà présent dans le top 20, mais je le remets si c'est une nouvelle entrée/classement
+    "maison-blanche": ` 
         <strong>4e/ Maison-Blanche, XIIIe :</strong> 
         <ul>
             <li>Butte-aux-Cailles = quartier sous-coté pour sortir en termes de restos et bars</li>
@@ -269,7 +269,7 @@ const threadDetails = {
             <li>Commerces de bouches de haute qualité</li>
             <li>Trois parcs dingos</li>
         </ul>`,
-    "gare": ` // Déjà présent
+    "gare": ` 
         <strong>1er/ Gare, XIIIe :</strong>
         <ul>
             <li>Les + belles vues sont dans ses tours</li>
@@ -283,7 +283,7 @@ const threadDetails = {
         <ul>
             <li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li>
         </ul>`,
-    "plaine-de-monceaux": ` // Attention: potentiellement déjà "Plaine de Monceaux" (sans trait d'union) ou inversement. La slugification sera la même.
+    "plaine-de-monceaux": ` 
         <strong>XXe/ Plaine-de-Monceaux, XVIIe :</strong> 
         <ul>
             <li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li>
@@ -293,7 +293,7 @@ const threadDetails = {
         <ul>
             <li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li>
         </ul>`,
-    "pont-de-flandre": ` // Déjà présent
+    "pont-de-flandre": `
         <strong>11e/ Pont-de-Flandre, XIXe :</strong>
         <ul>
             <li>Des salles de concert partout</li>
@@ -321,7 +321,7 @@ const threadDetails = {
         <ul>
             <li>[VOTRE TEXTE POUR CE QUARTIER ICI]</li>
         </ul>`,
-    "halles": ` // Déjà présent
+    "halles": ` 
         <strong>5e/ Halles, Ier :</strong>
         <ul>
             <li>Si Paris avait un centre symbolique, ce serait celui-là</li>
@@ -346,7 +346,7 @@ const threadDetails = {
     "faubourg-montmartre": `
         <strong>XXe/ Faubourg-Montmartre, IXe :</strong>
         <ul><li>[VOTRE TEXTE ICI]</li></ul>`,
-    "porte-saint-denis": ` // Déjà présent (attention à la duplication si ce n'est pas intentionnel)
+    "porte-saint-denis": ` 
         <strong>16e/ Porte Saint-Denis, Xe :</strong>
         <ul>
             <li>L'un des quartiers les plus sympas pour sortir le soir à Paris</li>
