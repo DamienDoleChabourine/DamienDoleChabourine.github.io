@@ -157,6 +157,9 @@ var clePourLesRecherches = (nomQuartierOriginal).toLowerCase()
 
 console.log(`Quartier original: "${nomQuartierOriginal}", Clé générée pour les recherches: "${clePourLesRecherches}"`);
 
+var imagePath = 'images/' + clePourLesRecherches + '.jpg';
+var articlePath = 'articles/' + clePourLesRecherches + '.html';
+
 var descriptionDuThread;
 if (typeof threadDetails !== 'undefined' && threadDetails.hasOwnProperty(clePourLesRecherches)) { // << UTILISEZ clePourLesRecherches ICI
     descriptionDuThread = threadDetails[clePourLesRecherches];
