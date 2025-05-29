@@ -1,6 +1,6 @@
 /* Style pour le conteneur principal du popup personnalisé */
 .custom-popup {
-    width: 500px; /* ou la largeur que vous souhaitez pour le popup total */
+    /* width: 500px; /* ou la largeur que vous souhaitez pour le popup total */
     /* max-height: 400px; */ /* Optionnel: pour éviter des popups trop hauts, contrôlé par .leaflet-popup-content maintenant */
     /* overflow-y: auto; */ /* Géré par .leaflet-popup-content */
 }
