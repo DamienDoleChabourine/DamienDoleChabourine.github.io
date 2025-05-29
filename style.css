@@ -1,6 +1,6 @@
 /* Style pour le conteneur principal du popup personnalisé */
 .custom-popup {
-    width: 300px; /* ou la largeur que vous souhaitez pour le popup total */
+    width: 500px; /* ou la largeur que vous souhaitez pour le popup total */
     max-height: 400px; /* Optionnel: pour éviter des popups trop hauts */
     overflow-y: auto; /* Ajoute une barre de défilement si le contenu dépasse */
 }
@@ -130,4 +130,16 @@
 }
 .custom-popup a:hover {
     text-decoration: underline;
+}
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* Pour éviter les barres de défilement si la carte prend toute la place */
+}
+
+#map {
+    width: 100%;
+    height: 80vh; /* La carte prendra 80% de la hauteur de la fenêtre d'affichage */
+    /* Essayez différentes valeurs : 70vh, 90vh, ou même 100vh si vous voulez qu'elle remplisse tout */
 }
